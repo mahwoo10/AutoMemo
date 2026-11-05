@@ -21,13 +21,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#0F2537"
-                android:padding="20.dp">
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/tvAppName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MobiRappel"
+                    android:text="AutoMemo"
                     android:textColor="@android:color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvAppName"
-                    android:layout_marginTop="16.dp"
+                    android:layout_marginTop="16dp"
                     android:text="Mes Véhicules"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
@@ -47,27 +47,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvSectionTitle"
-                    android:layout_marginTop="10.dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/etSearch"
                         android:layout_width="0dp"
-                        android:layout_height="46.dp"
+                        android:layout_height="46dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_white_rounded"
-                        android:hint="🔍 Search"
-                        android:paddingHorizontal="12.dp"
+                        android:hint="🔍 Rechercher"
+                        android:paddingHorizontal="12dp"
                         android:textColor="#1F2937"
                         android:textColorHint="#9CA3AF"
                         android:textSize="14sp" />
 
                     <Button
                         android:id="@+id/btnAddVehicle"
-                        android:layout_width="46.dp"
-                        android:layout_height="46.dp"
-                        android:layout_marginStart="8.dp"
-                        android:backgroundTint="#1976D2"
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:layout_marginStart="8dp"
+                        app:backgroundTint="#1976D2"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
                         android:padding="0dp"
                         android:text="+"
                         android:textColor="@android:color/white"
@@ -81,14 +83,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                android:padding="16.dp" />
+                android:padding="16dp" />
 
             <!-- Prochaines Échéances -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16.dp"
-                android:layout_marginTop="8.dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
                 android:text="Prochaines Échéances"
                 android:textColor="#1F2937"
                 android:textSize="16sp"
@@ -97,16 +99,16 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16.dp"
+                android:layout_margin="16dp"
                 app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="12.dp"
-                app:cardElevation="2.dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16.dp">
+                    android:padding="16dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -124,8 +126,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:background="#FFEBEE"
-                            android:paddingHorizontal="8.dp"
-                            android:paddingVertical="2.dp"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
                             android:text="Alertes"
                             android:textColor="#D32F2F"
                             android:textSize="12sp"
@@ -135,7 +137,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4.dp"
+                        android:layout_marginTop="4dp"
                         android:text="Contrôle technique à renouveler sous 30 jours."
                         android:textColor="#6B7280"
                         android:textSize="12sp" />
