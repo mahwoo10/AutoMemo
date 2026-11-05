@@ -3,31 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16.dp"
-    android:gravity="center_horizontal">
+    android:padding="16.dp">
 
     <TextView
-        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="AutoMemo - Contrôle Technique"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="24.dp"/>
+        android:layout_marginBottom="16.dp"/>
 
     <Button
         android:id="@+id/btnAddVehicle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="+ Ajouter un Véhicule"
-        android:layout_marginBottom="24.dp"/>
+        android:layout_marginBottom="16.dp"/>
 
-    <TextView
-        android:id="@+id/tvStatus"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewVehicles"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Le suivi de ton contrôle technique et des informations du propriétaire s'affichera ici."
-        android:textSize="14sp"
-        android:gravity="center"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
