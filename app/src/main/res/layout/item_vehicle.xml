@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8.dp"
-    android:elevation="4dp"
-    android:padding="12.dp">
+    android:elevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,8 +42,18 @@
             android:text="Contrôle Technique : En cours"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:textColor="#D32F2F"
             android:layout_marginTop="8.dp"/>
+
+        <TextView
+            android:id="@+id/tvPdfAction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📄 Afficher le certificat PDF"
+            android:textSize="12sp"
+            android:textColor="#1976D2`"
+            android:textStyle="bold"
+            android:layout_marginTop="8.dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
