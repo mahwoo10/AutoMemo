@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16.dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ajouter un Véhicule &amp; Contrôle Technique"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16.dp"/>
+
+        <!-- Infos Véhicule -->
+        <EditText
+            android:id="@+id/etVehicleName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nom du véhicule (ex: Honda CGL 125)"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/etLicensePlate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Numéro d'immatriculation"
+            android:inputType="text"/>
+
+        <!-- Infos Propriétaire -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coordonnées du Propriétaire"
+            android:textStyle="bold"
+            android:layout_marginTop="16.dp"
+            android:layout_marginBottom="8.dp"/>
+
+        <EditText
+            android:id="@+id/etOwnerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nom complet"
+            android:inputType="textPersonName"/>
+
+        <EditText
+            android:id="@+id/etOwnerPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Numéro de téléphone"
+            android:inputType="phone"/>
+
+        <EditText
+            android:id="@+id/etOwnerEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"/>
+
+        <EditText
+            android:id="@+id/etOwnerAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Adresse"
+            android:inputType="textPostalAddress"/>
+
+        <!-- Contrôle Technique & PDF -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contrôle Technique (Prioritaire)"
+            android:textStyle="bold"
+            android:layout_marginTop="16.dp"
+            android:layout_marginBottom="8.dp"/>
+
+        <Button
+            android:id="@+id/btnSelectPdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Importer le certificat PDF du Contrôle Technique"/>
+
+        <TextView
+            android:id="@+id/tvPdfStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aucun fichier PDF sélectionné"
+            android:textSize="12sp"
+            android:layout_marginTop="4.dp"
+            android:layout_marginBottom="24.dp"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enregistrer le véhicule"/>
+
+    </LinearLayout>
+</ScrollView>
