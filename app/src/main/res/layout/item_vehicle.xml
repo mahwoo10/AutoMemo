@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="3dp"
-    app:cardBackgroundColor="@android:color/white">
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,78 +14,123 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- En-tête : Nom + Immatriculation + Bouton Options -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvVehicleName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Toyota RAV4"
-                android:textColor="@color/text_dark"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvLicensePlate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/tvVehicleName"
-                android:layout_marginStart="8dp"
-                android:text="- B-4567 CD"
-                android:textColor="@color/text_muted"
-                android:textSize="14sp" />
-        </RelativeLayout>
-
-        <!-- Statut Visite Technique / Contrôle Technique -->
+        <!-- Icône + nom + plaque -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_icon_circle">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_car"
+                    android:tint="@color/navy_header" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvVehicleName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Toyota RAV4"
+                    android:textColor="@color/text_dark"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvLicensePlate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_plate"
+                    android:paddingStart="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="2dp"
+                    android:text="B-4567 CD"
+                    android:textColor="@color/text_dark"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Statut + échéance -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvTechnicalControlStatus"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Visite Technique : Valide"
+                android:background="@drawable/bg_chip"
+                android:backgroundTint="@color/status_green_bg"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:text="Valide"
                 android:textColor="@color/status_green"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvExpiryDate"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="15/12/2026"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="Échéance : 15/12/2026"
                 android:textColor="@color/text_muted"
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Barre d'avancement d'échéance -->
+        <!-- Barre de progression -->
         <ProgressBar
             android:id="@+id/progressExpiry"
-            style="@android:style/Widget.ProgressBar.Horizontal"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:layout_marginTop="6dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="10dp"
+            android:max="100"
             android:progress="75"
-            android:progressDrawable="@android:drawable/progress_horizontal" />
+            android:progressDrawable="@drawable/progress_rounded" />
 
-        <!-- Infos Propriétaire & Lien PDF -->
-        <RelativeLayout
+        <!-- Propriétaire + document -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvOwnerInfo"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Propriétaire : -"
                 android:textColor="@color/text_muted"
                 android:textSize="12sp" />
@@ -94,13 +139,13 @@
                 android:id="@+id/tvPdfAction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="📄 PDF Certificat"
+                android:layout_marginStart="8dp"
+                android:text="📄 Voir le PDF"
                 android:textColor="@color/accent_blue"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
