@@ -17,7 +17,7 @@
             android:background="#0F2537"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="24.dp">
+            android:padding="24dp">
 
             <TextView
                 android:id="@+id/tvDetailTitle"
@@ -42,18 +42,18 @@
             android:id="@+id/cardGlobalStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16.dp"
-            android:layout_marginTop="-16.dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="-16dp"
             app:cardBackgroundColor="#E8F5E9"
-            app:cardCornerRadius="20.dp"
-            app:cardElevation="2.dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp">
 
             <TextView
                 android:id="@+id/tvGlobalStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="12.dp"
+                android:padding="12dp"
                 android:text="Statut Global : À jour"
                 android:textColor="#2E7D32"
                 android:textStyle="bold" />
@@ -63,8 +63,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16.dp"
-            android:layout_marginTop="20.dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
             android:text="Documents Clés"
             android:textColor="#1F2937"
             android:textSize="16sp"
@@ -73,17 +73,17 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16.dp"
-            android:layout_marginTop="8.dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
             app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="12.dp"
-            app:cardElevation="2.dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16.dp">
+                android:padding="16dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                     android:id="@+id/tvDetailExpiry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4.dp"
+                    android:layout_marginTop="4dp"
                     android:text="Expires le : --/--/----"
                     android:textColor="#6B7280"
                     android:textSize="12sp" />
@@ -119,8 +119,8 @@
                     android:id="@+id/btnViewDoc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12.dp"
-                    android:backgroundTint="#0F2537"
+                    android:layout_marginTop="12dp"
+                    app:backgroundTint="#0F2537"
                     android:text="Afficher le Justificatif"
                     android:textColor="@android:color/white" />
             </LinearLayout>
@@ -130,8 +130,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16.dp"
-            android:layout_marginTop="20.dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
             android:text="Notifications"
             android:textColor="#1F2937"
             android:textSize="16sp"
@@ -140,16 +140,16 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16.dp"
+            android:layout_margin="16dp"
             app:cardBackgroundColor="@android:color/white"
-            app:cardCornerRadius="12.dp"
-            app:cardElevation="2.dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16.dp">
+                android:padding="16dp">
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch30Days"
@@ -163,7 +163,7 @@
                     android:id="@+id/switch15Days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8.dp"
+                    android:layout_marginTop="8dp"
                     android:checked="true"
                     android:text="Rappel 15 jours avant"
                     android:textColor="#1F2937" />
@@ -172,7 +172,7 @@
                     android:id="@+id/switch7Days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8.dp"
+                    android:layout_marginTop="8dp"
                     android:checked="true"
                     android:text="Rappel 7 jours avant"
                     android:textColor="#1F2937" />
