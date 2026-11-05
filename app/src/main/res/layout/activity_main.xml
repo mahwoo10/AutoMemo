@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- En-tête Bleu Nuit avec Avatar -->
+            <!-- En-tête Bleu Nuit -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,7 +32,6 @@
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
-                <!-- Titre Mes Véhicules + Recherche -->
                 <TextView
                     android:id="@+id/tvSectionTitle"
                     android:layout_width="wrap_content"
@@ -76,15 +75,15 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <!-- Liste des Véhicules Enregistrés -->
+            <!-- Liste des Véhicules -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewVehicles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16.dp"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                android:padding="16.dp" />
 
-            <!-- Section Prochaines Échéances (Composant de la maquette) -->
+            <!-- Prochaines Échéances -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,6 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16.dp"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="12.dp"
                 app:cardElevation="2.dp">
 
@@ -145,7 +145,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
