@@ -1,188 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F6F8"
-    android:padding="16dp">
+    android:background="@color/bg_light"
+    android:orientation="vertical">
 
+    <!-- En-tête -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@drawable/bg_header"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Retour"
+            android:focusable="true"
+            android:padding="8dp"
+            android:src="@drawable/ic_back"
+            android:tint="@android:color/white" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:text="Ajouter / Modifier un Document"
-            android:textColor="#0F2537"
-            android:textSize="18sp"
+            android:layout_marginStart="8dp"
+            android:text="Ajouter un véhicule"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
+    </LinearLayout>
 
-        <!-- Nom Véhicule -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Véhicule :"
-            android:textColor="#1F2937"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etVehicleName"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp"
-            android:background="@android:color/white"
-            android:hint="Ex: Toyota RAV4"
-            android:inputType="text"
-            android:paddingHorizontal="12dp"
-            android:textColor="#1F2937"
-            android:textColorHint="#9CA3AF" />
-
-        <!-- Immatriculation -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Immatriculation :"
-            android:textColor="#1F2937"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etLicensePlate"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp"
-            android:background="@android:color/white"
-            android:hint="Ex: B-4567 CD"
-            android:inputType="text"
-            android:paddingHorizontal="12dp"
-            android:textColor="#1F2937"
-            android:textColorHint="#9CA3AF" />
-
-        <!-- Propriétaire -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Propriétaire :"
-            android:textColor="#1F2937"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etOwnerName"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/white"
-            android:hint="Nom du propriétaire"
-            android:inputType="textPersonName"
-            android:paddingHorizontal="12dp"
-            android:textColor="#1F2937"
-            android:textColorHint="#9CA3AF" />
-
-        <EditText
-            android:id="@+id/etOwnerPhone"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="12dp"
-            android:background="@android:color/white"
-            android:hint="Téléphone (ex: 97000000)"
-            android:inputType="phone"
-            android:paddingHorizontal="12dp"
-            android:textColor="#1F2937"
-            android:textColorHint="#9CA3AF" />
-
-        <!-- Date d'Expiration -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date d'Échéance / Expiration :"
-            android:textColor="#1F2937"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnPickExpiryDate"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            app:backgroundTint="@android:color/white"
-            android:text="📅 Sélectionner la Date"
-            android:textColor="#1F2937" />
-
-        <TextView
-            android:id="@+id/tvSelectedDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Aucune date sélectionnée"
-            android:textColor="#6B7280"
-            android:textSize="12sp" />
-
-        <!-- Choix du justificatif -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Justificatif"
-            android:textColor="#1F2937"
-            android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnSelectPhoto"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                app:backgroundTint="@android:color/white"
-                android:text="📷 Photo / Galerie"
-                android:textColor="#1F2937"
-                android:textSize="12sp" />
+            <!-- Véhicule -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
 
-            <Button
-                android:id="@+id/btnSelectPdf"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                app:backgroundTint="@android:color/white"
-                android:text="📄 Fichier PDF"
-                android:textColor="#1F2937"
-                android:textSize="12sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="Véhicule"
+                        android:textColor="@color/navy_header"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:hint="Nom du véhicule (ex : Toyota RAV4)"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etVehicleName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:textColor="@color/text_dark" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Immatriculation (ex : B-4567 CD)"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLicensePlate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapCharacters"
+                            android:textColor="@color/text_dark" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Propriétaire -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="Propriétaire"
+                        android:textColor="@color/navy_header"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:hint="Nom du propriétaire"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etOwnerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:textColor="@color/text_dark" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Téléphone (ex : 97000000)"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etOwnerPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:textColor="@color/text_dark" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Contrôle technique -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="Contrôle technique"
+                        android:textColor="@color/navy_header"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnPickExpiryDate"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="Choisir la date d'expiration"
+                        android:textColor="@color/navy_header"
+                        app:cornerRadius="12dp"
+                        app:icon="@drawable/ic_calendar"
+                        app:iconTint="@color/navy_header"
+                        app:strokeColor="@color/stroke_light" />
+
+                    <TextView
+                        android:id="@+id/tvSelectedDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Aucune date sélectionnée"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="Justificatif (photo ou PDF)"
+                        android:textColor="@color/text_dark"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnSelectPhoto"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:text="Photo"
+                            android:textColor="@color/navy_header"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_image"
+                            app:iconTint="@color/navy_header"
+                            app:strokeColor="@color/stroke_light" />
+
+                        <Button
+                            android:id="@+id/btnSelectPdf"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:text="PDF"
+                            android:textColor="@color/navy_header"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_doc"
+                            app:iconTint="@color/navy_header"
+                            app:strokeColor="@color/stroke_light" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvPdfStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Aucun fichier attaché"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/tvPdfStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="Aucun fichier attaché"
-            android:textColor="#6B7280"
-            android:textSize="12sp" />
+    <!-- Bouton fixe en bas -->
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Enregistrer"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/status_green"
+        app:cornerRadius="16dp" />
 
-        <!-- Enregistrer -->
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            app:backgroundTint="#2E7D32"
-            android:text="Enregistrer le Document"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>
