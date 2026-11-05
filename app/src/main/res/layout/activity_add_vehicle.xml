@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_light"
     android:padding="16.dp">
 
     <LinearLayout
@@ -12,92 +13,130 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ajouter un Véhicule &amp; Contrôle Technique"
-            android:textSize="18sp"
+            android:text="Ajouter / Enregistrer un Document"
+            android:textColor="@color/navy_header"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="16.dp"/>
 
         <!-- Infos Véhicule -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Véhicule &amp; Immatriculation"
+            android:textColor="@color/text_dark"
+            android:textStyle="bold"
+            android:layout_marginBottom="4.dp"/>
+
         <EditText
             android:id="@+id/etVehicleName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nom du véhicule (ex: Honda CGL 125)"
-            android:inputType="text"/>
+            android:layout_height="48.dp"
+            android:background="@android:color/white"
+            android:paddingHorizontal="12.dp"
+            android:hint="Ex: Toyota RAV4"
+            android:inputType="text"
+            android:layout_marginBottom="8.dp"/>
 
         <EditText
             android:id="@+id/etLicensePlate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Numéro d'immatriculation"
-            android:inputType="text"/>
+            android:layout_height="48.dp"
+            android:background="@android:color/white"
+            android:paddingHorizontal="12.dp"
+            android:hint="Immatriculation (ex: B-4567 CD)"
+            android:inputType="text"
+            android:layout_marginBottom="16.dp"/>
 
         <!-- Infos Propriétaire -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Coordonnées du Propriétaire"
+            android:textColor="@color/text_dark"
             android:textStyle="bold"
-            android:layout_marginTop="16.dp"
-            android:layout_marginBottom="8.dp"/>
+            android:layout_marginBottom="4.dp"/>
 
         <EditText
             android:id="@+id/etOwnerName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nom complet"
-            android:inputType="textPersonName"/>
+            android:layout_height="48.dp"
+            android:background="@android:color/white"
+            android:paddingHorizontal="12.dp"
+            android:hint="Nom complet du propriétaire"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="8.dp"/>
 
         <EditText
             android:id="@+id/etOwnerPhone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Numéro de téléphone"
-            android:inputType="phone"/>
+            android:layout_height="48.dp"
+            android:background="@android:color/white"
+            android:paddingHorizontal="12.dp"
+            android:hint="Téléphone (ex: 97000000)"
+            android:inputType="phone"
+            android:layout_marginBottom="16.dp"/>
 
-        <EditText
-            android:id="@+id/etOwnerEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="E-mail"
-            android:inputType="textEmailAddress"/>
-
-        <EditText
-            android:id="@+id/etOwnerAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Adresse"
-            android:inputType="textPostalAddress"/>
-
-        <!-- Contrôle Technique & PDF -->
+        <!-- Détails Document & Date d'Échéance -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contrôle Technique (Prioritaire)"
+            android:text="Visite Technique / Contrôle Technique"
+            android:textColor="@color/text_dark"
             android:textStyle="bold"
-            android:layout_marginTop="16.dp"
-            android:layout_marginBottom="8.dp"/>
+            android:layout_marginBottom="4.dp"/>
+
+        <Button
+            android:id="@+id/btnPickExpiryDate"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📅 Sélectionner la Date d'Épiration"
+            android:layout_marginBottom="4.dp"/>
+
+        <TextView
+            android:id="@+id/tvSelectedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aucune date sélectionnée"
+            android:textColor="@color/text_muted"
+            android:textSize="12sp"
+            android:layout_marginBottom="16.dp"/>
+
+        <!-- Import du justificatif PDF -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Justificatif (PDF)"
+            android:textColor="@color/text_dark"
+            android:textStyle="bold"
+            android:layout_marginBottom="4.dp"/>
 
         <Button
             android:id="@+id/btnSelectPdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Importer le certificat PDF du Contrôle Technique"/>
+            android:text="📁 Importer le Certificat PDF"
+            android:layout_marginBottom="4.dp"/>
 
         <TextView
             android:id="@+id/tvPdfStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Aucun fichier PDF sélectionné"
+            android:text="Aucun fichier attaché"
+            android:textColor="@color/text_muted"
             android:textSize="12sp"
-            android:layout_marginTop="4.dp"
             android:layout_marginBottom="24.dp"/>
 
+        <!-- Bouton de validation -->
         <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enregistrer le véhicule"/>
+            android:layout_height="54.dp"
+            android:backgroundTint="@color/status_green"
+            android:text="Enregistrer le Document"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 </ScrollView>
