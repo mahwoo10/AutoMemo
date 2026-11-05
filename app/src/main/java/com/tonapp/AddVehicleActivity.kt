@@ -41,7 +41,7 @@ class AddVehicleActivity : AppCompatActivity() {
                     // Les URI de galerie ne nécessitent pas toujours la permission persistante
                 }
                 selectedDocUri = uri.toString()
-                tvPdfStatus.text = "Document attaché : ${uri.lastPathSegment}"
+                tvPdfStatus.text = "Justificatif attaché : ${uri.lastPathSegment}"
             }
         }
     }
@@ -68,7 +68,7 @@ class AddVehicleActivity : AppCompatActivity() {
             val datePicker = DatePickerDialog(
                 this,
                 { _, year, month, dayOfMonth ->
-                    calendar.set(year, month, dayOfMonth)
+                    calendar.set(year, month, dayOfMonth, 23, 59, 0)
                     selectedExpiryTime = calendar.timeInMillis
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     tvSelectedDate.text = "Date d'expiration : ${dateFormat.format(calendar.time)}"
@@ -107,7 +107,11 @@ class AddVehicleActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val expiry = selectedExpiryTime ?: (System.currentTimeMillis() + (365L * 24 * 60 * 60 * 1000))
+            val expiry = selectedExpiryTime
+            if (expiry == null) {
+                Toast.makeText(this, "Veuillez choisir la date d'expiration", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val vehicleId = UUID.randomUUID().toString()
 
             val vehicleEntity = VehicleEntity(
