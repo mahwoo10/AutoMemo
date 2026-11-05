@@ -10,15 +10,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface VehicleDao {
 
-    // Récupérer la liste de tous les véhicules (triés par échéance de contrôle technique pour prioriser)
     @Query("SELECT * FROM vehicles ORDER BY technicalControlExpiry ASC")
     fun getAllVehicles(): Flow<List<VehicleEntity>>
 
-    // Insérer ou mettre à jour un véhicule et ses informations propriétaire/PDF
+    // Lecture unique (utilisée après un redémarrage pour reprogrammer les rappels)
+    @Query("SELECT * FROM vehicles")
+    suspend fun getAllOnce(): List<VehicleEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertVehicle(vehicle: VehicleEntity)
 
-    // Supprimer un véhicule
     @Delete
     suspend fun deleteVehicle(vehicle: VehicleEntity)
 }

@@ -12,7 +12,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         @Volatile
-        private var INSTANCE: AppDatabase? = functionInstance() // pattern Singleton standard
+        private var INSTANCE: AppDatabase? = null
 
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
@@ -25,7 +25,5 @@ abstract class AppDatabase : RoomDatabase() {
                 instance
             }
         }
-        
-        private fun functionInstance(): AppDatabase? = null
     }
 }
