@@ -44,23 +44,6 @@
                     android:textColor="@color/on_navy_muted"
                     android:textSize="14sp" />
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btnAddVehicle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:padding="0dp"
-                android:text="+"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                app:backgroundTint="@color/accent_blue"
-                app:cornerRadius="24dp" />
         </LinearLayout>
 
         <!-- Compteurs -->
@@ -195,7 +178,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:padding="16dp" />
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="88dp" />
 
         <TextView
             android:id="@+id/tvEmptyState"
@@ -208,17 +194,17 @@
             android:textColor="@color/text_muted"
             android:textSize="14sp"
             android:visibility="gone" />
-    </FrameLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        app:elevation="8dp"
-        app:itemIconTint="@color/nav_item_color"
-        app:itemTextColor="@color/nav_item_color"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAddVehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:contentDescription="Ajouter un véhicule"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="@color/accent_blue"
+            app:tint="@android:color/white" />
+    </FrameLayout>
 
 </LinearLayout>
