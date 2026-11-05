@@ -1,8 +1,11 @@
 package com.tonapp
 
+import android.Manifest
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -10,9 +13,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.tonapp.data.AppDatabase
 import com.tonapp.data.VehicleEntity
+import com.tonapp.utils.NotificationScheduler
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -27,14 +32,13 @@ class AddVehicleActivity : AppCompatActivity() {
     private lateinit var tvPdfStatus: TextView
     private lateinit var tvSelectedDate: TextView
 
-    // Saisie de document (PDF ou Image)
     private val docLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
                 try {
                     contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 } catch (e: Exception) {
-                    // Les URI de galerie directe n'exigent pas toujours la permission persistante
+                    // Les images de galerie n'ont pas systématiquement besoin de permission persistante
                 }
                 selectedDocUri = uri.toString()
                 tvPdfStatus.text = "Document attaché : ${uri.lastPathSegment}"
@@ -45,6 +49,8 @@ class AddVehicleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_vehicle)
+
+        checkNotificationPermission()
 
         val etVehicleName = findViewById<EditText>(R.id.etVehicleName)
         val etLicensePlate = findViewById<EditText>(R.id.etLicensePlate)
@@ -57,7 +63,6 @@ class AddVehicleActivity : AppCompatActivity() {
         tvPdfStatus = findViewById(R.id.tvPdfStatus)
         val btnSave = findViewById<Button>(R.id.btnSave)
 
-        // Sélecteur de date
         btnPickExpiryDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(
@@ -75,7 +80,6 @@ class AddVehicleActivity : AppCompatActivity() {
             datePicker.show()
         }
 
-        // Sélectionner une Photo / Galerie
         btnSelectPhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -84,7 +88,6 @@ class AddVehicleActivity : AppCompatActivity() {
             docLauncher.launch(intent)
         }
 
-        // Sélectionner un PDF
         btnSelectPdf.setOnClickListener {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -105,9 +108,10 @@ class AddVehicleActivity : AppCompatActivity() {
             }
 
             val expiry = selectedExpiryTime ?: (System.currentTimeMillis() + (365L * 24 * 60 * 60 * 1000))
+            val vehicleId = UUID.randomUUID().toString()
 
             val vehicleEntity = VehicleEntity(
-                id = UUID.randomUUID().toString(),
+                id = vehicleId,
                 name = name,
                 licensePlate = plate,
                 ownerFullName = ownerName,
@@ -122,8 +126,20 @@ class AddVehicleActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 AppDatabase.getDatabase(this@AddVehicleActivity).vehicleDao().insertVehicle(vehicleEntity)
-                Toast.makeText(this@AddVehicleActivity, "Document enregistré avec succès !", Toast.LENGTH_SHORT).show()
+
+                // Programmation automatique des rappels J-30 et J-7
+                NotificationScheduler.scheduleReminders(this@AddVehicleActivity, vehicleId, name, expiry)
+
+                Toast.makeText(this@AddVehicleActivity, "Document et rappels enregistrés !", Toast.LENGTH_SHORT).show()
                 finish()
+            }
+        }
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
             }
         }
     }
