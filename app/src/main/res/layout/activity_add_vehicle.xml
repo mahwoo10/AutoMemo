@@ -11,22 +11,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16.dp">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16.dp"
+            android:text="Ajouter / Modifier un Document"
+            android:textColor="#0F2537"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="Ajouter / Modifier un Document"
-                android:textColor="#0F2537"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <!-- Saisie Véhicule -->
+        <!-- Nom Véhicule -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,6 +42,7 @@
             android:textColor="#1F2937"
             android:textColorHint="#9CA3AF" />
 
+        <!-- Immatriculation -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,10 +76,22 @@
             android:layout_width="match_parent"
             android:layout_height="48.dp"
             android:layout_marginTop="4.dp"
-            android:layout_marginBottom="12.dp"
+            android:layout_marginBottom="8.dp"
             android:background="@android:color/white"
             android:hint="Nom du propriétaire"
             android:inputType="textPersonName"
+            android:paddingHorizontal="12.dp"
+            android:textColor="#1F2937"
+            android:textColorHint="#9CA3AF" />
+
+        <EditText
+            android:id="@+id/etOwnerPhone"
+            android:layout_width="match_parent"
+            android:layout_height="48.dp"
+            android:layout_marginBottom="12.dp"
+            android:background="@android:color/white"
+            android:hint="Téléphone (ex: 97000000)"
+            android:inputType="phone"
             android:paddingHorizontal="12.dp"
             android:textColor="#1F2937"
             android:textColorHint="#9CA3AF" />
@@ -116,7 +124,7 @@
             android:textColor="#6B7280"
             android:textSize="12sp" />
 
-        <!-- Justificatif (Grands blocs de la Maquette) -->
+        <!-- Choix du justificatif -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,80 +134,34 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100.dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8.dp"
             android:layout_marginBottom="8.dp"
             android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardTakePhoto"
+            <Button
+                android:id="@+id/btnSelectPhoto"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="6.dp"
+                android:layout_height="60.dp"
+                android:layout_marginEnd="4.dp"
                 android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="8.dp"
-                app:cardElevation="1.dp">
+                android:backgroundTint="@android:color/white"
+                android:text="📷 Photo / Galerie"
+                android:textColor="#1F2937"
+                android:textSize="12sp" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📷"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4.dp"
-                        android:text="Prendre une photo"
-                        android:textColor="#1F2937"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardSelectGallery"
+            <Button
+                android:id="@+id/btnSelectPdf"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="6.dp"
+                android:layout_height="60.dp"
+                android:layout_marginStart="4.dp"
                 android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="8.dp"
-                app:cardElevation="1.dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🖼️"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4.dp"
-                        android:text="Importer photo / PDF"
-                        android:textColor="#1F2937"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:backgroundTint="@android:color/white"
+                android:text="📄 Fichier PDF"
+                android:textColor="#1F2937"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
@@ -211,7 +173,7 @@
             android:textColor="#6B7280"
             android:textSize="12sp" />
 
-        <!-- Bouton Enregistrer Vert -->
+        <!-- Enregistrer -->
         <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
