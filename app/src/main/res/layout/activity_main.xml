@@ -3,26 +3,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16.dp">
+    android:background="#F4F6F8">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="AutoMemo - Contrôle Technique"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16.dp"/>
-
-    <Button
-        android:id="@+id/btnAddVehicle"
+    <!-- En-tête Bleu Nuit -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="+ Ajouter un Véhicule"
-        android:layout_marginBottom="16.dp"/>
+        android:background="#0F2537"
+        android:orientation="vertical"
+        android:padding="20.dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AutoMemo"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16.dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Mes Véhicules"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnAddVehicle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="#1976D2"
+                android:text="+ Ajouter"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- Liste des Véhicules -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewVehicles"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:padding="16.dp"
+        android:clipToPadding="false" />
 
 </LinearLayout>
