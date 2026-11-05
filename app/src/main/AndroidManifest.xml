@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Permissions d'accès aux médias, alarmes et notifications -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
         android:label="AutoMemo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <!-- Écran principal / Tableau de Bord -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,20 +19,26 @@
             </intent-filter>
         </activity>
 
-        <!-- Écran d'ajout de document -->
         <activity
             android:name=".AddVehicleActivity"
             android:exported="false" />
 
-        <!-- Écran de détails d'un véhicule & rappels -->
         <activity
             android:name=".VehicleDetailActivity"
             android:exported="false" />
 
-        <!-- Récepteur des notifications de rappel -->
         <receiver
             android:name=".NotificationReceiver"
             android:exported="false" />
+
+        <!-- Reprogramme les rappels après un redémarrage du téléphone -->
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
