@@ -31,7 +31,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     }
 
     fun updateData(newList: List<VehicleEntity>) {
-        // Tri par urgence : dates expirées et plus proches en haut (valeurs de timestamps les plus petites d'abord)
+        // Tri par urgence : les échéances expirées ou les plus proches s'affichent en premier
         fullList = newList.sortedBy { it.technicalControlExpiry ?: Long.MAX_VALUE }
         displayedList = fullList
         notifyDataSetChanged()
@@ -77,6 +77,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.tvExpiryDate.text = dateFormat.format(Date(expiry))
 
+        // Calcul du temps restant et de la jauge
         val currentTime = System.currentTimeMillis()
         val diffMillis = expiry - currentTime
         val daysRemaining = (diffMillis / (1000 * 60 * 60 * 24)).toInt()
@@ -88,6 +89,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
         }
         holder.progressExpiry.progress = progress
 
+        // Adaptation de la couleur selon le statut
         when {
             daysRemaining <= 0 -> {
                 holder.tvStatus.text = "❌ Contrôle Technique EXPIRÉ !"
@@ -108,6 +110,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
             }
         }
 
+        // Action d'ouverture du document (PDF ou Image)
         if (!vehicle.technicalControlPdfPath.isNullOrEmpty()) {
             holder.tvPdfAction.visibility = View.VISIBLE
             val isPdf = vehicle.technicalControlPdfPath.endsWith(".pdf", ignoreCase = true)
@@ -131,6 +134,19 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
             holder.tvPdfAction.visibility = View.GONE
         }
 
+        // Clic simple : ouvrir l'écran de détails du véhicule
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, VehicleDetailActivity::class.java).apply {
+                putExtra("NAME", vehicle.name)
+                putExtra("PLATE", vehicle.licensePlate)
+                putExtra("EXPIRY", vehicle.technicalControlExpiry)
+                putExtra("DOC_PATH", vehicle.technicalControlPdfPath)
+            }
+            context.startActivity(intent)
+        }
+
+        // Appui long : supprimer le véhicule
         holder.itemView.setOnLongClickListener {
             val context = holder.itemView.context
             AlertDialog.Builder(context)
@@ -148,5 +164,4 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     }
 
     override fun getItemCount() = displayedList.size
-    }
-    
+}
