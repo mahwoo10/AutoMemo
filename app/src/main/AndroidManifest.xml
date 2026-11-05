@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Permissions médias et notifications -->
+    <!-- Permissions d'accès aux médias, alarmes et notifications -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
-        <!-- Écran principal -->
+        <!-- Écran principal / Tableau de Bord -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,12 +23,17 @@
             </intent-filter>
         </activity>
 
-        <!-- Écran d'ajout -->
+        <!-- Écran d'ajout de document -->
         <activity
             android:name=".AddVehicleActivity"
             android:exported="false" />
 
-        <!-- Service de réception des alerte notifications -->
+        <!-- Écran de détails d'un véhicule & rappels -->
+        <activity
+            android:name=".VehicleDetailActivity"
+            android:exported="false" />
+
+        <!-- Récepteur des notifications de rappel -->
         <receiver
             android:name=".NotificationReceiver"
             android:exported="false" />
