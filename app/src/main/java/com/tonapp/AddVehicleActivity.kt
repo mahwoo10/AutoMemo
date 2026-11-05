@@ -38,7 +38,7 @@ class AddVehicleActivity : AppCompatActivity() {
                 try {
                     contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 } catch (e: Exception) {
-                    // Les images de galerie n'ont pas systématiquement besoin de permission persistante
+                    // Les URI de galerie ne nécessitent pas toujours la permission persistante
                 }
                 selectedDocUri = uri.toString()
                 tvPdfStatus.text = "Document attaché : ${uri.lastPathSegment}"
@@ -126,11 +126,8 @@ class AddVehicleActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 AppDatabase.getDatabase(this@AddVehicleActivity).vehicleDao().insertVehicle(vehicleEntity)
-
-                // Programmation automatique des rappels J-30 et J-7
                 NotificationScheduler.scheduleReminders(this@AddVehicleActivity, vehicleId, name, expiry)
-
-                Toast.makeText(this@AddVehicleActivity, "Document et rappels enregistrés !", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddVehicleActivity, "Document enregistré avec succès !", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
