@@ -21,8 +21,29 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
+class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
+
+    private var displayedList: List<VehicleEntity> = fullList
+
+    fun updateData(newList: List<VehicleEntity>) {
+        fullList = newList
+        displayedList = newList
+        notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        displayedList = if (query.isEmpty()) {
+            fullList
+        } else {
+            fullList.filter {
+                it.name.contains(query, ignoreCase = true) ||
+                it.licensePlate.contains(query, ignoreCase = true) ||
+                it.ownerFullName.contains(query, ignoreCase = true)
+            }
+        }
+        notifyDataSetChanged()
+    }
 
     class VehicleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView = view.findViewById(R.id.tvVehicleName)
@@ -41,7 +62,7 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
     }
 
     override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
-        val vehicle = vehicles[position]
+        val vehicle = displayedList[position]
         holder.tvName.text = vehicle.name
         holder.tvPlate.text = "- ${vehicle.licensePlate}"
         holder.tvOwner.text = "Propriétaire : ${vehicle.ownerFullName} (${vehicle.ownerPhoneNumber})"
@@ -50,7 +71,6 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.tvExpiryDate.text = dateFormat.format(Date(expiry))
 
-        // Calcul du temps restant
         val currentTime = System.currentTimeMillis()
         val diffMillis = expiry - currentTime
         val daysRemaining = (diffMillis / (1000 * 60 * 60 * 24)).toInt()
@@ -62,7 +82,6 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
         }
         holder.progressExpiry.progress = progress
 
-        // Adaptation de la couleur de la jauge et du texte selon l'échéance
         when {
             daysRemaining <= 0 -> {
                 holder.tvStatus.text = "❌ Contrôle Technique EXPIRÉ !"
@@ -83,7 +102,6 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
             }
         }
 
-        // Action sur le document attaché
         if (!vehicle.technicalControlPdfPath.isNullOrEmpty()) {
             holder.tvPdfAction.visibility = View.VISIBLE
             val isPdf = vehicle.technicalControlPdfPath.endsWith(".pdf", ignoreCase = true)
@@ -107,7 +125,6 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
             holder.tvPdfAction.visibility = View.GONE
         }
 
-        // Appui long pour supprimer le véhicule
         holder.itemView.setOnLongClickListener {
             val context = holder.itemView.context
             AlertDialog.Builder(context)
@@ -124,5 +141,5 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
         }
     }
 
-    override fun getItemCount() = vehicles.size
+    override fun getItemCount() = displayedList.size
 }
