@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F4F6F8"
@@ -10,151 +11,207 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ajouter / Enregistrer un Document"
-            android:textColor="#0F2537"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16.dp"/>
+            android:layout_marginBottom="16.dp">
 
-        <!-- Infos Véhicule -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Ajouter / Modifier un Document"
+                android:textColor="#0F2537"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- Saisie Véhicule -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Véhicule &amp; Immatriculation"
+            android:text="Véhicule :"
             android:textColor="#1F2937"
-            android:textStyle="bold"
-            android:layout_marginBottom="4.dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etVehicleName"
             android:layout_width="match_parent"
             android:layout_height="48.dp"
+            android:layout_marginTop="4.dp"
+            android:layout_marginBottom="12.dp"
             android:background="@android:color/white"
-            android:paddingHorizontal="12.dp"
             android:hint="Ex: Toyota RAV4"
-            android:textColor="#1F2937"
-            android:textColorHint="#9CA3AF"
             android:inputType="text"
-            android:layout_marginBottom="8.dp"/>
+            android:paddingHorizontal="12.dp"
+            android:textColor="#1F2937"
+            android:textColorHint="#9CA3AF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Immatriculation :"
+            android:textColor="#1F2937"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etLicensePlate"
             android:layout_width="match_parent"
             android:layout_height="48.dp"
+            android:layout_marginTop="4.dp"
+            android:layout_marginBottom="12.dp"
             android:background="@android:color/white"
-            android:paddingHorizontal="12.dp"
-            android:hint="Immatriculation (ex: B-4567 CD)"
-            android:textColor="#1F2937"
-            android:textColorHint="#9CA3AF"
+            android:hint="Ex: B-4567 CD"
             android:inputType="text"
-            android:layout_marginBottom="16.dp"/>
+            android:paddingHorizontal="12.dp"
+            android:textColor="#1F2937"
+            android:textColorHint="#9CA3AF" />
 
-        <!-- Infos Propriétaire -->
+        <!-- Propriétaire -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Coordonnées du Propriétaire"
+            android:text="Propriétaire :"
             android:textColor="#1F2937"
-            android:textStyle="bold"
-            android:layout_marginBottom="4.dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etOwnerName"
             android:layout_width="match_parent"
             android:layout_height="48.dp"
+            android:layout_marginTop="4.dp"
+            android:layout_marginBottom="12.dp"
             android:background="@android:color/white"
-            android:paddingHorizontal="12.dp"
-            android:hint="Nom complet du propriétaire"
-            android:textColor="#1F2937"
-            android:textColorHint="#9CA3AF"
+            android:hint="Nom du propriétaire"
             android:inputType="textPersonName"
-            android:layout_marginBottom="8.dp"/>
-
-        <EditText
-            android:id="@+id/etOwnerPhone"
-            android:layout_width="match_parent"
-            android:layout_height="48.dp"
-            android:background="@android:color/white"
             android:paddingHorizontal="12.dp"
-            android:hint="Téléphone (ex: 97000000)"
             android:textColor="#1F2937"
-            android:textColorHint="#9CA3AF"
-            android:inputType="phone"
-            android:layout_marginBottom="16.dp"/>
+            android:textColorHint="#9CA3AF" />
 
-        <!-- Date d'Échéance -->
+        <!-- Date d'Expiration -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Visite Technique / Contrôle Technique"
+            android:text="Date d'Échéance / Expiration :"
             android:textColor="#1F2937"
-            android:textStyle="bold"
-            android:layout_marginBottom="4.dp"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnPickExpiryDate"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="📅 Sélectionner la Date d'Expiration"
-            android:layout_marginBottom="4.dp"/>
+            android:layout_height="48.dp"
+            android:layout_marginTop="4.dp"
+            android:layout_marginBottom="4.dp"
+            android:backgroundTint="@android:color/white"
+            android:text="📅 Sélectionner la Date"
+            android:textColor="#1F2937" />
 
         <TextView
             android:id="@+id/tvSelectedDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16.dp"
             android:text="Aucune date sélectionnée"
             android:textColor="#6B7280"
-            android:textSize="12sp"
-            android:layout_marginBottom="16.dp"/>
+            android:textSize="12sp" />
 
-        <!-- Import du justificatif (Photo / Galerie / PDF) -->
+        <!-- Justificatif (Grands blocs de la Maquette) -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Justificatif (Photo ou PDF)"
+            android:text="Justificatif"
             android:textColor="#1F2937"
-            android:textStyle="bold"
-            android:layout_marginBottom="6.dp"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="8.dp">
+            android:layout_height="100.dp"
+            android:layout_marginTop="8.dp"
+            android:layout_marginBottom="8.dp"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnSelectPhoto"
-                style="?attr/materialButtonOutlinedStyle"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTakePhoto"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6.dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="4.dp"
-                android:text="📷 Photo / Galerie"/>
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="8.dp"
+                app:cardElevation="1.dp">
 
-            <Button
-                android:id="@+id/btnSelectPdf"
-                style="?attr/materialButtonOutlinedStyle"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📷"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4.dp"
+                        android:text="Prendre une photo"
+                        android:textColor="#1F2937"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardSelectGallery"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6.dp"
                 android:layout_weight="1"
-                android:layout_marginStart="4.dp"
-                android:text="📄 Fichier PDF"/>
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="8.dp"
+                app:cardElevation="1.dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🖼️"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4.dp"
+                        android:text="Importer photo / PDF"
+                        android:textColor="#1F2937"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <TextView
             android:id="@+id/tvPdfStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24.dp"
             android:text="Aucun fichier attaché"
             android:textColor="#6B7280"
-            android:textSize="12sp"
-            android:layout_marginBottom="24.dp"/>
+            android:textSize="12sp" />
 
-        <!-- Enregistrer -->
+        <!-- Bouton Enregistrer Vert -->
         <Button
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
@@ -162,7 +219,8 @@
             android:backgroundTint="#2E7D32"
             android:text="Enregistrer le Document"
             android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>
