@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Permissions pour lire les fichiers PDF et médias -->
+    <!-- Permissions médias et notifications -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
         android:label="AutoMemo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        
+
         <!-- Écran principal -->
         <activity
             android:name=".MainActivity"
@@ -21,9 +23,14 @@
             </intent-filter>
         </activity>
 
-        <!-- Écran d'ajout de véhicule et contrôle technique -->
+        <!-- Écran d'ajout -->
         <activity
             android:name=".AddVehicleActivity"
+            android:exported="false" />
+
+        <!-- Service de réception des alerte notifications -->
+        <receiver
+            android:name=".NotificationReceiver"
             android:exported="false" />
 
     </application>
