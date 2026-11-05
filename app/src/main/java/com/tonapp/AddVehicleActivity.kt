@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.tonapp.data.AppDatabase
 import com.tonapp.data.VehicleEntity
-import com.tonapp.utils.PdfManagerHelper
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -22,18 +21,23 @@ import java.util.UUID
 
 class AddVehicleActivity : AppCompatActivity() {
 
-    private var selectedPdfUri: String? = null
+    private var selectedDocUri: String? = null
     private var selectedExpiryTime: Long? = null
 
     private lateinit var tvPdfStatus: TextView
     private lateinit var tvSelectedDate: TextView
 
-    private val pdfLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    // Saisie de document (PDF ou Image)
+    private val docLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
-                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                selectedPdfUri = uri.toString()
-                tvPdfStatus.text = "PDF attaché : ${uri.lastPathSegment}"
+                try {
+                    contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                } catch (e: Exception) {
+                    // Les URI de galerie directe n'exigent pas toujours la permission persistante
+                }
+                selectedDocUri = uri.toString()
+                tvPdfStatus.text = "Document attaché : ${uri.lastPathSegment}"
             }
         }
     }
@@ -48,11 +52,12 @@ class AddVehicleActivity : AppCompatActivity() {
         val etOwnerPhone = findViewById<EditText>(R.id.etOwnerPhone)
         val btnPickExpiryDate = findViewById<Button>(R.id.btnPickExpiryDate)
         tvSelectedDate = findViewById(R.id.tvSelectedDate)
+        val btnSelectPhoto = findViewById<Button>(R.id.btnSelectPhoto)
         val btnSelectPdf = findViewById<Button>(R.id.btnSelectPdf)
         tvPdfStatus = findViewById(R.id.tvPdfStatus)
         val btnSave = findViewById<Button>(R.id.btnSave)
 
-        // Sélecteur de date d'expiration
+        // Sélecteur de date
         btnPickExpiryDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(
@@ -70,8 +75,22 @@ class AddVehicleActivity : AppCompatActivity() {
             datePicker.show()
         }
 
+        // Sélectionner une Photo / Galerie
+        btnSelectPhoto.setOnClickListener {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
+            docLauncher.launch(intent)
+        }
+
+        // Sélectionner un PDF
         btnSelectPdf.setOnClickListener {
-            PdfManagerHelper.openPdfSelector(pdfLauncher)
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "application/pdf"
+            }
+            docLauncher.launch(intent)
         }
 
         btnSave.setOnClickListener {
@@ -96,7 +115,7 @@ class AddVehicleActivity : AppCompatActivity() {
                 ownerEmail = "",
                 ownerAddress = "",
                 technicalControlExpiry = expiry,
-                technicalControlPdfPath = selectedPdfUri,
+                technicalControlPdfPath = selectedDocUri,
                 tvmExpiry = null,
                 tvmReceiptPdfPath = null
             )
