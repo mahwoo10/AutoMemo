@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8.dp"
+    android:elevation="4dp"
+    android:padding="12.dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12.dp">
+
+        <TextView
+            android:id="@+id/tvVehicleName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nom du Véhicule"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvLicensePlate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Immatriculation"
+            android:textSize="14sp"
+            android:textColor="#666666"/>
+
+        <TextView
+            android:id="@+id/tvOwnerInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Propriétaire : -"
+            android:textSize="12sp"
+            android:layout_marginTop="4.dp"/>
+
+        <TextView
+            android:id="@+id/tvTechnicalControlStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contrôle Technique : En cours"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#D32F2F"
+            android:layout_marginTop="8.dp"/>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
