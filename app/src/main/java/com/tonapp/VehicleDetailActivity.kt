@@ -30,7 +30,7 @@ class VehicleDetailActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvDetailPlate).text = plate
 
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        findViewById<TextView>(R.id.tvDetailExpiry).text = "Expires le : ${dateFormat.format(Date(expiry))}"
+        findViewById<TextView>(R.id.tvDetailExpiry).text = "Expire le : ${dateFormat.format(Date(expiry))}"
 
         val cardGlobalStatus = findViewById<CardView>(R.id.cardGlobalStatus)
         val tvGlobalStatus = findViewById<TextView>(R.id.tvGlobalStatus)
