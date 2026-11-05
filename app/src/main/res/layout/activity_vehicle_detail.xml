@@ -39,6 +39,7 @@
 
         <!-- Statut Global -->
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardGlobalStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16.dp"
@@ -58,7 +59,7 @@
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
-        <!-- Section Documents Clés -->
+        <!-- Documents Clés -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16.dp"
             android:layout_marginTop="8.dp"
+            app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="12.dp"
             app:cardElevation="2.dp">
 
@@ -124,7 +126,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Section Notifications (Toggles 30j, 15j, 7j) -->
+        <!-- Notifications -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -139,6 +141,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16.dp"
+            app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="12.dp"
             app:cardElevation="2.dp">
 
