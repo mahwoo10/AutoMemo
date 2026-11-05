@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.tonapp.data.AppDatabase
 import com.tonapp.data.VehicleEntity
+import com.tonapp.utils.NotificationScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -160,6 +161,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
                 .setPositiveButton("Supprimer") { _, _ ->
                     CoroutineScope(Dispatchers.IO).launch {
                         AppDatabase.getDatabase(context).vehicleDao().deleteVehicle(vehicle)
+                        NotificationScheduler.cancelReminders(context, vehicle.id)
                     }
                 }
                 .setNegativeButton("Annuler", null)
@@ -169,5 +171,5 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     }
 
     override fun getItemCount() = displayedList.size
-    }
-    
+}
+
