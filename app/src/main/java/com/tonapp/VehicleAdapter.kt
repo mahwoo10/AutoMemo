@@ -1,6 +1,7 @@
 package com.tonapp
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -31,7 +32,6 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     }
 
     fun updateData(newList: List<VehicleEntity>) {
-        // Tri par urgence : les échéances expirées ou les plus proches s'affichent en premier
         fullList = newList.sortedBy { it.technicalControlExpiry ?: Long.MAX_VALUE }
         displayedList = fullList
         notifyDataSetChanged()
@@ -67,6 +67,15 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
         return VehicleViewHolder(view)
     }
 
+    private fun getMimeType(context: Context, uri: Uri): String {
+        val typeFromResolver = try {
+            context.contentResolver.getType(uri)
+        } catch (e: Exception) {
+            null
+        }
+        return typeFromResolver ?: if (uri.toString().contains(".pdf", ignoreCase = true)) "application/pdf" else "image/*"
+    }
+
     override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
         val vehicle = displayedList[position]
         holder.tvName.text = vehicle.name
@@ -77,7 +86,6 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.tvExpiryDate.text = dateFormat.format(Date(expiry))
 
-        // Calcul du temps restant et de la jauge
         val currentTime = System.currentTimeMillis()
         val diffMillis = expiry - currentTime
         val daysRemaining = (diffMillis / (1000 * 60 * 60 * 24)).toInt()
@@ -89,7 +97,6 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
         }
         holder.progressExpiry.progress = progress
 
-        // Adaptation de la couleur selon le statut
         when {
             daysRemaining <= 0 -> {
                 holder.tvStatus.text = "❌ Contrôle Technique EXPIRÉ !"
@@ -110,17 +117,17 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
             }
         }
 
-        // Action d'ouverture du document (PDF ou Image)
         if (!vehicle.technicalControlPdfPath.isNullOrEmpty()) {
             holder.tvPdfAction.visibility = View.VISIBLE
-            val isPdf = vehicle.technicalControlPdfPath.endsWith(".pdf", ignoreCase = true)
+            val context = holder.itemView.context
+            val uri = Uri.parse(vehicle.technicalControlPdfPath)
+            val mimeType = getMimeType(context, uri)
+            val isPdf = mimeType.contains("pdf", ignoreCase = true)
+
             holder.tvPdfAction.text = if (isPdf) "📄 Voir le PDF" else "🖼️ Voir la Photo"
 
             holder.tvPdfAction.setOnClickListener {
-                val context = holder.itemView.context
-                val uri = Uri.parse(vehicle.technicalControlPdfPath)
                 val intent = Intent(Intent.ACTION_VIEW).apply {
-                    val mimeType = if (isPdf) "application/pdf" else "image/*"
                     setDataAndType(uri, mimeType)
                     flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 }
@@ -134,7 +141,6 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
             holder.tvPdfAction.visibility = View.GONE
         }
 
-        // Clic simple : ouvrir l'écran de détails du véhicule
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, VehicleDetailActivity::class.java).apply {
@@ -146,7 +152,6 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
             context.startActivity(intent)
         }
 
-        // Appui long : supprimer le véhicule
         holder.itemView.setOnLongClickListener {
             val context = holder.itemView.context
             AlertDialog.Builder(context)
@@ -164,4 +169,5 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     }
 
     override fun getItemCount() = displayedList.size
-}
+    }
+    
