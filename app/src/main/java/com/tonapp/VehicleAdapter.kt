@@ -24,16 +24,21 @@ import java.util.Locale
 class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
 
-    private var displayedList: List<VehicleEntity> = fullList
+    private var displayedList: List<VehicleEntity> = emptyList()
+
+    init {
+        updateData(fullList)
+    }
 
     fun updateData(newList: List<VehicleEntity>) {
-        fullList = newList
-        displayedList = newList
+        // Tri par urgence : dates expirées et plus proches en haut (valeurs de timestamps les plus petites d'abord)
+        fullList = newList.sortedBy { it.technicalControlExpiry ?: Long.MAX_VALUE }
+        displayedList = fullList
         notifyDataSetChanged()
     }
 
     fun filter(query: String) {
-        displayedList = if (query.isEmpty()) {
+        val filtered = if (query.isEmpty()) {
             fullList
         } else {
             fullList.filter {
@@ -42,6 +47,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
                 it.ownerFullName.contains(query, ignoreCase = true)
             }
         }
+        displayedList = filtered.sortedBy { it.technicalControlExpiry ?: Long.MAX_VALUE }
         notifyDataSetChanged()
     }
 
@@ -142,4 +148,5 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     }
 
     override fun getItemCount() = displayedList.size
-}
+    }
+    
