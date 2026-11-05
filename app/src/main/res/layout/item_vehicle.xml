@@ -1,59 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8.dp"
-    android:elevation="4dp">
+    android:layout_marginBottom="12.dp"
+    app:cardCornerRadius="12.dp"
+    app:cardElevation="3.dp"
+    app:cardBackgroundColor="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12.dp">
+        android:padding="16.dp">
 
-        <TextView
-            android:id="@+id/tvVehicleName"
+        <!-- En-tête : Nom + Immatriculation + Bouton Options -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvVehicleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toyota RAV4"
+                android:textColor="@color/text_dark"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLicensePlate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/tvVehicleName"
+                android:layout_marginStart="8.dp"
+                android:text="- B-4567 CD"
+                android:textColor="@color/text_muted"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <!-- Statut Visite Technique / Contrôle Technique -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nom du Véhicule"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10.dp">
 
-        <TextView
-            android:id="@+id/tvLicensePlate"
+            <TextView
+                android:id="@+id/tvTechnicalControlStatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Visite Technique : Valide"
+                android:textColor="@color/status_green"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvExpiryDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15/12/2026"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Barre d'avancement d'échéance -->
+        <ProgressBar
+            android:id="@+id/progressExpiry"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="6.dp"
+            android:layout_marginTop="6.dp"
+            android:progress="75"
+            android:progressDrawable="@android:drawable/progress_horizontal" />
+
+        <!-- Infos Propriétaire & Lien PDF -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Immatriculation"
-            android:textSize="14sp"
-            android:textColor="#666666"/>
+            android:layout_marginTop="12.dp">
 
-        <TextView
-            android:id="@+id/tvOwnerInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Propriétaire : -"
-            android:textSize="12sp"
-            android:layout_marginTop="4.dp"/>
+            <TextView
+                android:id="@+id/tvOwnerInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Propriétaire : -"
+                android:textColor="@color/text_muted"
+                android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/tvTechnicalControlStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Contrôle Technique : En cours"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8.dp"/>
-
-        <TextView
-            android:id="@+id/tvPdfAction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="📄 Afficher le certificat PDF"
-            android:textSize="12sp"
-            android:textColor="#1976D2"
-            android:textStyle="bold"
-            android:layout_marginTop="8.dp"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tvPdfAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="📄 PDF Certificat"
+                android:textColor="@color/accent_blue"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </RelativeLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
