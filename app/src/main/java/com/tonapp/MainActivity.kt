@@ -3,11 +3,11 @@ package com.tonapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tonapp.data.AppDatabase
-import com.tonapp.utils.VehicleHelper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -19,21 +19,17 @@ class MainActivity : AppCompatActivity() {
 
         val btnAddVehicle = findViewById<Button>(R.id.btnAddVehicle)
         btnAddVehicle.setOnClickListener {
-            val intent = Intent(this, AddVehicleActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, AddVehicleActivity::class.java))
         }
 
-        val database = AppDatabase.getDatabase(this)
-        val vehicleDao = database.vehicleDao()
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewVehicles)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Observation de la liste des véhicules (Triée par priorité de contrôle technique)
+        val vehicleDao = AppDatabase.getDatabase(this).vehicleDao()
+
         lifecycleScope.launch {
             vehicleDao.getAllVehicles().collectLatest { vehicles ->
-                if (vehicles.isNotEmpty()) {
-                    val firstVehicle = vehicles[0]
-                    val status = VehicleHelper.getTechnicalControlStatus(firstVehicle)
-                    // Le traitement de l'affichage des alertes se fera ici
-                }
+                recyclerView.adapter = VehicleAdapter(vehicles)
             }
         }
     }
