@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.tonapp.data.AppDatabase
 import com.tonapp.data.VehicleEntity
@@ -28,12 +28,14 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
 
     private var displayedList: List<VehicleEntity> = emptyList()
 
+    private class StatusStyle(val label: String, val textRes: Int, val bgRes: Int, val barRes: Int)
+
     init {
         updateData(fullList)
     }
 
     fun updateData(newList: List<VehicleEntity>) {
-        fullList = newList.sortedBy { it.technicalControlExpiry ?: Long.MAX_VALUE }
+        fullList = newList.sortedBy { it.technicalControlExpiry }
         displayedList = fullList
         notifyDataSetChanged()
     }
@@ -48,7 +50,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
                 it.ownerFullName.contains(query, ignoreCase = true)
             }
         }
-        displayedList = filtered.sortedBy { it.technicalControlExpiry ?: Long.MAX_VALUE }
+        displayedList = filtered.sortedBy { it.technicalControlExpiry }
         notifyDataSetChanged()
     }
 
@@ -79,17 +81,23 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
 
     override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
         val vehicle = displayedList[position]
+        val ctx = holder.itemView.context
+
         holder.tvName.text = vehicle.name
-        holder.tvPlate.text = "- ${vehicle.licensePlate}"
-        holder.tvOwner.text = "Propriétaire : ${vehicle.ownerFullName} (${vehicle.ownerPhoneNumber})"
+        holder.tvPlate.text = vehicle.licensePlate
 
-        val expiry = vehicle.technicalControlExpiry ?: System.currentTimeMillis()
+        val ownerParts = listOf(vehicle.ownerFullName, vehicle.ownerPhoneNumber).filter { it.isNotBlank() }
+        holder.tvOwner.text = if (ownerParts.isEmpty()) {
+            "Propriétaire non renseigné"
+        } else {
+            "Propriétaire : " + ownerParts.joinToString(" · ")
+        }
+
+        val expiry = vehicle.technicalControlExpiry
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        holder.tvExpiryDate.text = dateFormat.format(Date(expiry))
+        holder.tvExpiryDate.text = "Échéance : ${dateFormat.format(Date(expiry))}"
 
-        val currentTime = System.currentTimeMillis()
-        val diffMillis = expiry - currentTime
-        val daysRemaining = (diffMillis / (1000 * 60 * 60 * 24)).toInt()
+        val daysRemaining = ((expiry - System.currentTimeMillis()) / (1000 * 60 * 60 * 24)).toInt()
 
         val progress = when {
             daysRemaining <= 0 -> 100
@@ -98,34 +106,29 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
         }
         holder.progressExpiry.progress = progress
 
-        when {
-            daysRemaining <= 0 -> {
-                holder.tvStatus.text = "❌ Contrôle Technique EXPIRÉ !"
-                holder.tvStatus.setTextColor(Color.RED)
-                holder.progressExpiry.progressTintList = ColorStateList.valueOf(Color.RED)
-            }
-            daysRemaining <= 30 -> {
-                val statusColor = Color.parseColor("#FFA000")
-                holder.tvStatus.text = "⚠️ Expire dans $daysRemaining jour(s)"
-                holder.tvStatus.setTextColor(statusColor)
-                holder.progressExpiry.progressTintList = ColorStateList.valueOf(statusColor)
-            }
-            else -> {
-                val statusColor = Color.parseColor("#2E7D32")
-                holder.tvStatus.text = "✅ Contrôle Technique Valide ($daysRemaining j)"
-                holder.tvStatus.setTextColor(statusColor)
-                holder.progressExpiry.progressTintList = ColorStateList.valueOf(statusColor)
-            }
+        val style = when {
+            daysRemaining <= 0 -> StatusStyle(
+                "Expiré", R.color.status_red, R.color.status_red_bg, R.color.status_red
+            )
+            daysRemaining <= 30 -> StatusStyle(
+                "Expire dans $daysRemaining jour(s)", R.color.status_orange, R.color.status_orange_bg, R.color.status_orange_bar
+            )
+            else -> StatusStyle(
+                "Valide ($daysRemaining j)", R.color.status_green, R.color.status_green_bg, R.color.status_green
+            )
         }
+        holder.tvStatus.text = style.label
+        holder.tvStatus.setTextColor(ContextCompat.getColor(ctx, style.textRes))
+        holder.tvStatus.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(ctx, style.bgRes))
+        holder.progressExpiry.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(ctx, style.barRes))
 
         if (!vehicle.technicalControlPdfPath.isNullOrEmpty()) {
             holder.tvPdfAction.visibility = View.VISIBLE
-            val context = holder.itemView.context
             val uri = Uri.parse(vehicle.technicalControlPdfPath)
-            val mimeType = getMimeType(context, uri)
+            val mimeType = getMimeType(ctx, uri)
             val isPdf = mimeType.contains("pdf", ignoreCase = true)
 
-            holder.tvPdfAction.text = if (isPdf) "📄 Voir le PDF" else "🖼️ Voir la Photo"
+            holder.tvPdfAction.text = if (isPdf) "📄 Voir le PDF" else "🖼️ Voir la photo"
 
             holder.tvPdfAction.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -133,9 +136,9 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
                     flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 }
                 try {
-                    context.startActivity(intent)
+                    ctx.startActivity(intent)
                 } catch (e: Exception) {
-                    Toast.makeText(context, "Aucune application disponible pour ouvrir ce fichier", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ctx, "Aucune application disponible pour ouvrir ce fichier", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
@@ -143,25 +146,23 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
         }
 
         holder.itemView.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, VehicleDetailActivity::class.java).apply {
+            val intent = Intent(ctx, VehicleDetailActivity::class.java).apply {
                 putExtra("NAME", vehicle.name)
                 putExtra("PLATE", vehicle.licensePlate)
                 putExtra("EXPIRY", vehicle.technicalControlExpiry)
                 putExtra("DOC_PATH", vehicle.technicalControlPdfPath)
             }
-            context.startActivity(intent)
+            ctx.startActivity(intent)
         }
 
         holder.itemView.setOnLongClickListener {
-            val context = holder.itemView.context
-            AlertDialog.Builder(context)
+            AlertDialog.Builder(ctx)
                 .setTitle("Supprimer le véhicule")
                 .setMessage("Voulez-vous vraiment supprimer ${vehicle.name} (${vehicle.licensePlate}) ?")
                 .setPositiveButton("Supprimer") { _, _ ->
                     CoroutineScope(Dispatchers.IO).launch {
-                        AppDatabase.getDatabase(context).vehicleDao().deleteVehicle(vehicle)
-                        NotificationScheduler.cancelReminders(context, vehicle.id)
+                        AppDatabase.getDatabase(ctx).vehicleDao().deleteVehicle(vehicle)
+                        NotificationScheduler.cancelReminders(ctx, vehicle.id)
                     }
                 }
                 .setNegativeButton("Annuler", null)
@@ -172,4 +173,3 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
 
     override fun getItemCount() = displayedList.size
 }
-

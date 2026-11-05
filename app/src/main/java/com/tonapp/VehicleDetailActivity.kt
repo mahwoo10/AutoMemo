@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,8 @@ class VehicleDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vehicle_detail)
+
+        findViewById<ImageView>(R.id.ivBack).setOnClickListener { finish() }
 
         val name = intent.getStringExtra("NAME") ?: "Véhicule"
         val plate = intent.getStringExtra("PLATE") ?: ""
@@ -42,8 +45,8 @@ class VehicleDetailActivity : AppCompatActivity() {
             cardGlobalStatus.setCardBackgroundColor(Color.parseColor("#FFEBEE"))
         } else if (daysRemaining <= 30) {
             tvGlobalStatus.text = "Statut Global : Expire bientôt ($daysRemaining j)"
-            tvGlobalStatus.setTextColor(Color.parseColor("#FFA000"))
-            cardGlobalStatus.setCardBackgroundColor(Color.parseColor("#FFF8E1"))
+            tvGlobalStatus.setTextColor(Color.parseColor("#B45309"))
+            cardGlobalStatus.setCardBackgroundColor(Color.parseColor("#FEF3C7"))
         } else {
             tvGlobalStatus.text = "Statut Global : À jour"
             tvGlobalStatus.setTextColor(Color.parseColor("#2E7D32"))
