@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tonapp.data.VehicleEntity
+import com.tonapp.model.Owner
+import com.tonapp.model.Vehicle
+import com.tonapp.utils.VehicleHelper
 
-class VehicleAdapter(private val vehicles: List<VehicleEntity>) : 
+class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
     RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
 
     class VehicleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -32,14 +35,19 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
         holder.tvName.text = vehicle.name
         holder.tvPlate.text = "Immat: ${vehicle.licensePlate}"
         holder.tvOwner.text = "Propriétaire : ${vehicle.ownerFullName} (${vehicle.ownerPhoneNumber})"
-        
-        val status = com.tonapp.utils.VehicleHelper.getTechnicalControlStatus(
-            com.tonapp.model.Vehicle(
-                vehicle.id, vehicle.name, vehicle.licensePlate,
-                com.tonapp.model.Owner(vehicle.ownerFullName, vehicle.ownerPhoneNumber, vehicle.ownerEmail, vehicle.ownerAddress),
-                vehicle.technicalControlExpiry, vehicle.technicalControlPdfPath, vehicle.tvmExpiry, vehicle.tvmReceiptPdfPath
-            )
+
+        val domainVehicle = Vehicle(
+            id = vehicle.id,
+            name = vehicle.name,
+            licensePlate = vehicle.licensePlate,
+            owner = Owner(vehicle.ownerFullName, vehicle.ownerPhoneNumber, vehicle.ownerEmail, vehicle.ownerAddress),
+            technicalControlExpiry = vehicle.technicalControlExpiry,
+            technicalControlPdfPath = vehicle.technicalControlPdfPath,
+            tvmExpiry = vehicle.tvmExpiry,
+            tvmReceiptPdfPath = vehicle.tvmReceiptPdfPath
         )
+
+        val status = VehicleHelper.getTechnicalControlStatus(domainVehicle)
 
         when (status) {
             2 -> {
@@ -56,7 +64,6 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
             }
         }
 
-        // Gestion de l'affichage et du clic sur le PDF du contrôle technique
         if (!vehicle.technicalControlPdfPath.isNullOrEmpty()) {
             holder.tvPdfAction.visibility = View.VISIBLE
             holder.tvPdfAction.text = "📄 Afficher le certificat PDF"
@@ -69,7 +76,7 @@ class VehicleAdapter(private val vehicles: List<VehicleEntity>) :
                 try {
                     context.startActivity(intent)
                 } catch (e: Exception) {
-                    // Si aucun lecteur PDF n'est installé
+                    // Ignorer si aucun lecteur PDF n'est présent
                 }
             }
         } else {
