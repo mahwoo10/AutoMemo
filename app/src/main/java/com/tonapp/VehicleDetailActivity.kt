@@ -1,5 +1,6 @@
 package com.tonapp
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -31,7 +32,6 @@ class VehicleDetailActivity : AppCompatActivity() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         findViewById<TextView>(R.id.tvDetailExpiry).text = "Expires le : ${dateFormat.format(Date(expiry))}"
 
-        // Calcul dynamique du statut global
         val cardGlobalStatus = findViewById<CardView>(R.id.cardGlobalStatus)
         val tvGlobalStatus = findViewById<TextView>(R.id.tvGlobalStatus)
         val daysRemaining = ((expiry - System.currentTimeMillis()) / (1000 * 60 * 60 * 24)).toInt()
@@ -52,11 +52,15 @@ class VehicleDetailActivity : AppCompatActivity() {
 
         val btnViewDoc = findViewById<Button>(R.id.btnViewDoc)
         if (!docPath.isNullOrEmpty()) {
+            val uri = Uri.parse(docPath)
+            val mimeType = getMimeType(this, uri)
+            val isPdf = mimeType.contains("pdf", ignoreCase = true)
+
+            btnViewDoc.text = if (isPdf) "📄 Afficher le PDF" else "🖼️ Afficher la Photo"
+
             btnViewDoc.setOnClickListener {
-                val uri = Uri.parse(docPath)
-                val isPdf = docPath.endsWith(".pdf", ignoreCase = true)
                 val intent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(uri, if (isPdf) "application/pdf" else "image/*")
+                    setDataAndType(uri, mimeType)
                     flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 }
                 try {
@@ -68,5 +72,14 @@ class VehicleDetailActivity : AppCompatActivity() {
         } else {
             btnViewDoc.visibility = View.GONE
         }
+    }
+
+    private fun getMimeType(context: Context, uri: Uri): String {
+        val typeFromResolver = try {
+            context.contentResolver.getType(uri)
+        } catch (e: Exception) {
+            null
+        }
+        return typeFromResolver ?: if (uri.toString().contains(".pdf", ignoreCase = true)) "application/pdf" else "image/*"
     }
 }
