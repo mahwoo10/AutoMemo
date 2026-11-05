@@ -15,11 +15,18 @@
         android:textStyle="bold"
         android:layout_marginBottom="24.dp"/>
 
+    <Button
+        android:id="@+id/btnAddVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+ Ajouter un Véhicule"
+        android:layout_marginBottom="24.dp"/>
+
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Aucun véhicule enregistré pour le moment. Le suivi de ton contrôle technique s'affichera ici."
+        android:text="Le suivi de ton contrôle technique et des informations du propriétaire s'affichera ici."
         android:textSize="14sp"
         android:gravity="center"/>
 
