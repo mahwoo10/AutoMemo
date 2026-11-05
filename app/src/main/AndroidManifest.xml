@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Permission pour lire les fichiers PDF du contrôle technique -->
+    <!-- Permissions pour lire les fichiers PDF -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
         
+        <!-- Écran principal -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -21,6 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Écran d'ajout de véhicule et contrôle technique -->
+        <activity
+            android:name=".AddVehicleActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
