@@ -12,14 +12,28 @@ android {
         applicationId "com.tonapp"
         minSdk 24
         targetSdk 34
-        versionCode 1
+        versionCode Integer.parseInt(System.getenv("GITHUB_RUN_NUMBER") ?: "1")
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        automemo {
+            storeFile file('automemo_key.p12')
+            storeType 'pkcs12'
+            storePassword '1c0e6767690b65d3'
+            keyAlias 'automemo'
+            keyPassword '1c0e6767690b65d3'
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.automemo
+        }
         release {
+            signingConfig signingConfigs.automemo
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
