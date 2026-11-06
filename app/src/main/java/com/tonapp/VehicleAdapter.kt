@@ -121,7 +121,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
 
         val style = when {
             daysRemaining <= 0 -> StatusStyle(
-                "Expiré", R.color.status_red, R.color.status_red_bg, R.color.status_red
+                VehicleStatus.expiredLabel(expiry), R.color.status_red, R.color.status_red_bg, R.color.status_red
             )
             daysRemaining <= 30 -> StatusStyle(
                 "Expire dans $daysRemaining jour(s)", R.color.status_orange, R.color.status_orange_bg, R.color.status_orange_bar

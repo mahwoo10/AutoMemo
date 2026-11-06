@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.tonapp.utils.NotificationScheduler
 import com.tonapp.utils.ReminderPrefs
+import com.tonapp.utils.VehicleStatus
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -43,7 +44,7 @@ class VehicleDetailActivity : AppCompatActivity() {
         val daysRemaining = ((expiry - System.currentTimeMillis()) / (1000 * 60 * 60 * 24)).toInt()
 
         if (daysRemaining <= 0) {
-            tvGlobalStatus.text = "Statut Global : EXPIRÉ !"
+            tvGlobalStatus.text = "Statut Global : ${VehicleStatus.expiredLabel(expiry)}"
             tvGlobalStatus.setTextColor(Color.parseColor("#D32F2F"))
             cardGlobalStatus.setCardBackgroundColor(Color.parseColor("#FFEBEE"))
         } else if (daysRemaining <= 30) {
