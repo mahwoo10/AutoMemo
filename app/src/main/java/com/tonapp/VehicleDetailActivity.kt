@@ -11,7 +11,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
+import com.tonapp.utils.NotificationScheduler
+import com.tonapp.utils.ReminderPrefs
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -53,6 +56,8 @@ class VehicleDetailActivity : AppCompatActivity() {
             cardGlobalStatus.setCardBackgroundColor(Color.parseColor("#E8F5E9"))
         }
 
+        setupReminderSwitches(intent.getStringExtra("ID") ?: "", name, expiry)
+
         val btnViewDoc = findViewById<Button>(R.id.btnViewDoc)
         if (!docPath.isNullOrEmpty()) {
             val uri = Uri.parse(docPath)
@@ -74,6 +79,38 @@ class VehicleDetailActivity : AppCompatActivity() {
             }
         } else {
             btnViewDoc.visibility = View.GONE
+        }
+    }
+
+    private fun setupReminderSwitches(vehicleId: String, name: String, expiry: Long) {
+        val switches = listOf(
+            30 to findViewById<SwitchCompat>(R.id.switch30Days),
+            15 to findViewById<SwitchCompat>(R.id.switch15Days),
+            7 to findViewById<SwitchCompat>(R.id.switch7Days)
+        )
+
+        if (vehicleId.isEmpty()) {
+            switches.forEach { it.second.isEnabled = false }
+            return
+        }
+
+        // État enregistré (activé par défaut), avant d'attacher les écouteurs
+        switches.forEach { (days, sw) ->
+            sw.isChecked = ReminderPrefs.isEnabled(this, vehicleId, days)
+        }
+
+        switches.forEach { (days, sw) ->
+            sw.setOnCheckedChangeListener { _, checked ->
+                ReminderPrefs.setEnabled(this, vehicleId, days, checked)
+                // On reprogramme tous les rappels selon les interrupteurs
+                NotificationScheduler.cancelReminders(this, vehicleId)
+                NotificationScheduler.scheduleReminders(this, vehicleId, name, expiry)
+                Toast.makeText(
+                    this,
+                    if (checked) "Rappel $days jours activé" else "Rappel $days jours désactivé",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

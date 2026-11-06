@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tonapp.data.AppDatabase
 import com.tonapp.data.VehicleEntity
 import com.tonapp.utils.NotificationScheduler
+import com.tonapp.utils.ReminderPrefs
+import com.tonapp.utils.StatusFilter
+import com.tonapp.utils.VehicleStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +30,8 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
     RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
 
     private var displayedList: List<VehicleEntity> = emptyList()
+    private var query: String = ""
+    private var statusFilter: StatusFilter = StatusFilter.ALL
 
     private class StatusStyle(val label: String, val textRes: Int, val bgRes: Int, val barRes: Int)
 
@@ -36,21 +41,29 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
 
     fun updateData(newList: List<VehicleEntity>) {
         fullList = newList.sortedBy { it.technicalControlExpiry }
-        displayedList = fullList
-        notifyDataSetChanged()
+        applyFilters()
     }
 
-    fun filter(query: String) {
-        val filtered = if (query.isEmpty()) {
-            fullList
-        } else {
-            fullList.filter {
-                it.name.contains(query, ignoreCase = true) ||
-                it.licensePlate.contains(query, ignoreCase = true) ||
-                it.ownerFullName.contains(query, ignoreCase = true)
-            }
+    fun filter(newQuery: String) {
+        query = newQuery
+        applyFilters()
+    }
+
+    fun setStatusFilter(filter: StatusFilter) {
+        statusFilter = filter
+        applyFilters()
+    }
+
+    private fun applyFilters() {
+        displayedList = fullList.filter { v ->
+            val matchesStatus = statusFilter == StatusFilter.ALL ||
+                VehicleStatus.of(v.technicalControlExpiry) == statusFilter
+            val matchesQuery = query.isEmpty() ||
+                v.name.contains(query, ignoreCase = true) ||
+                v.licensePlate.contains(query, ignoreCase = true) ||
+                v.ownerFullName.contains(query, ignoreCase = true)
+            matchesStatus && matchesQuery
         }
-        displayedList = filtered.sortedBy { it.technicalControlExpiry }
         notifyDataSetChanged()
     }
 
@@ -147,6 +160,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
 
         holder.itemView.setOnClickListener {
             val intent = Intent(ctx, VehicleDetailActivity::class.java).apply {
+                putExtra("ID", vehicle.id)
                 putExtra("NAME", vehicle.name)
                 putExtra("PLATE", vehicle.licensePlate)
                 putExtra("EXPIRY", vehicle.technicalControlExpiry)
@@ -163,6 +177,7 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
                     CoroutineScope(Dispatchers.IO).launch {
                         AppDatabase.getDatabase(ctx).vehicleDao().deleteVehicle(vehicle)
                         NotificationScheduler.cancelReminders(ctx, vehicle.id)
+                        ReminderPrefs.clear(ctx, vehicle.id)
                     }
                 }
                 .setNegativeButton("Annuler", null)
