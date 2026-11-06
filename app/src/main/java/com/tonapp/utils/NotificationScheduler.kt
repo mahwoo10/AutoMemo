@@ -21,6 +21,7 @@ object NotificationScheduler {
     fun scheduleReminders(context: Context, vehicleId: String, vehicleName: String, expiryTime: Long) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         for ((days, offset, message) in reminders) {
+            if (!ReminderPrefs.isEnabled(context, vehicleId, days)) continue
             val trigger = atNineAm(expiryTime - days * DAY)
             if (trigger > System.currentTimeMillis()) {
                 setAlarm(context, alarmManager, vehicleId.hashCode() + offset, vehicleName, message, trigger)
