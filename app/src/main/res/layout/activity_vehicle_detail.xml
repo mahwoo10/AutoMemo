@@ -168,6 +168,7 @@
                 </LinearLayout>
 
                 <Button
+                    android:textAllCaps="false"
                     android:id="@+id/btnViewDoc"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"

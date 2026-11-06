@@ -200,6 +200,7 @@
                         android:textStyle="bold" />
 
                     <Button
+                        android:textAllCaps="false"
                         android:id="@+id/btnPickExpiryDate"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
@@ -236,6 +237,7 @@
                         android:orientation="horizontal">
 
                         <Button
+                            android:textAllCaps="false"
                             android:id="@+id/btnSelectPhoto"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
@@ -250,6 +252,7 @@
                             app:strokeColor="@color/stroke_light" />
 
                         <Button
+                            android:textAllCaps="false"
                             android:id="@+id/btnSelectPdf"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
@@ -279,6 +282,7 @@
 
     <!-- Bouton fixe en bas -->
     <Button
+        android:textAllCaps="false"
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="56dp"
