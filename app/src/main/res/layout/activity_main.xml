@@ -58,6 +58,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
+                android:id="@+id/statExpired"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/bg_stat_card"
                 android:orientation="vertical"
                 android:padding="12dp">
@@ -84,6 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
+                android:id="@+id/statSoon"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/bg_stat_card"
                 android:orientation="vertical"
                 android:padding="12dp">
@@ -109,6 +115,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/statValid"
+                android:clickable="true"
+                android:focusable="true"
                 android:background="@drawable/bg_stat_card"
                 android:orientation="vertical"
                 android:padding="12dp">
@@ -166,6 +175,76 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <!-- Filtres par statut -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="8dp"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAll"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Tous"
+                android:textColor="@color/chip_text_color"
+                app:checkedIconVisible="false"
+                app:chipBackgroundColor="@color/chip_bg_color"
+                app:chipStrokeColor="@color/stroke_light"
+                app:chipStrokeWidth="1dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipExpired"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expirés"
+                android:textColor="@color/chip_text_color"
+                app:checkedIconVisible="false"
+                app:chipBackgroundColor="@color/chip_bg_color"
+                app:chipStrokeColor="@color/stroke_light"
+                app:chipStrokeWidth="1dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSoon"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bientôt"
+                android:textColor="@color/chip_text_color"
+                app:checkedIconVisible="false"
+                app:chipBackgroundColor="@color/chip_bg_color"
+                app:chipStrokeColor="@color/stroke_light"
+                app:chipStrokeWidth="1dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipValid"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valides"
+                android:textColor="@color/chip_text_color"
+                app:checkedIconVisible="false"
+                app:chipBackgroundColor="@color/chip_bg_color"
+                app:chipStrokeColor="@color/stroke_light"
+                app:chipStrokeWidth="1dp" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
 
     <!-- Liste -->
     <FrameLayout
