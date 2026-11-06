@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.tonapp.data.AppDatabase
 import com.tonapp.data.VehicleEntity
@@ -108,9 +107,5 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvCountSoon).text = soon.toString()
         findViewById<TextView>(R.id.tvCountValid).text = valid.toString()
 
-        findViewById<Chip>(R.id.chipAll).text = "Tous (${vehicles.size})"
-        findViewById<Chip>(R.id.chipExpired).text = "Expirés ($expired)"
-        findViewById<Chip>(R.id.chipSoon).text = "Bientôt ($soon)"
-        findViewById<Chip>(R.id.chipValid).text = "Valides ($valid)"
     }
 }
