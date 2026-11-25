@@ -100,13 +100,14 @@ class AddVehicleActivity : AppCompatActivity() {
         }
 
         btnSave.setOnClickListener {
-            val name = etVehicleName.text.toString().trim()
             val plate = etLicensePlate.text.toString().trim()
+            // Le modèle est facultatif : à défaut, on affiche l'immatriculation
+            val name = etVehicleName.text.toString().trim().ifEmpty { plate }
             val ownerName = etOwnerName.text.toString().trim()
             val ownerPhone = etOwnerPhone.text.toString().trim()
 
-            if (name.isEmpty() || plate.isEmpty()) {
-                Toast.makeText(this, "Veuillez renseigner le nom et l'immatriculation", Toast.LENGTH_SHORT).show()
+            if (plate.isEmpty()) {
+                Toast.makeText(this, "Veuillez renseigner l'immatriculation", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -134,7 +135,7 @@ class AddVehicleActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 AppDatabase.getDatabase(this@AddVehicleActivity).vehicleDao().insertVehicle(vehicleEntity)
                 NotificationScheduler.scheduleReminders(this@AddVehicleActivity, vehicleId, name, expiry)
-                Toast.makeText(this@AddVehicleActivity, "Document enregistré avec succès !", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddVehicleActivity, "Véhicule enregistré", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }

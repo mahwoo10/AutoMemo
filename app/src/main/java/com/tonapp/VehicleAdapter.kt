@@ -34,6 +34,8 @@ class VehicleAdapter(
     private var query: String = ""
     private var statusFilter: StatusFilter = StatusFilter.ALL
     private var limit: Int? = null
+    private var rangeFrom: Long? = null
+    private var rangeTo: Long? = null
 
     // Nombre de véhicules correspondant aux filtres, avant application de la limite
     var matchCount: Int = 0
@@ -61,6 +63,13 @@ class VehicleAdapter(
         applyFilters()
     }
 
+    // Limite l'affichage aux échéances comprises entre deux dates (null = pas de limite)
+    fun setDateRange(from: Long?, to: Long?) {
+        rangeFrom = from
+        rangeTo = to
+        applyFilters()
+    }
+
     // Réévalue les statuts (ex. au retour dans l'appli, le lendemain)
     fun refresh() = applyFilters()
 
@@ -79,7 +88,9 @@ class VehicleAdapter(
                 v.name.contains(query, ignoreCase = true) ||
                 v.licensePlate.contains(query, ignoreCase = true) ||
                 v.ownerFullName.contains(query, ignoreCase = true)
-            matchesStatus(v.technicalControlExpiry) && matchesQuery
+            val matchesRange = (rangeFrom == null || v.technicalControlExpiry >= rangeFrom!!) &&
+                (rangeTo == null || v.technicalControlExpiry <= rangeTo!!)
+            matchesStatus(v.technicalControlExpiry) && matchesQuery && matchesRange
         }
         matchCount = matches.size
         displayedList = limit?.let { matches.take(it) } ?: matches
