@@ -94,6 +94,22 @@
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
+        <!-- Action principale -->
+        <Button
+            android:id="@+id/btnVisitDone"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Visite technique effectuée"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/accent_blue"
+            app:cornerRadius="12dp" />
+
         <!-- Documents -->
         <TextView
             android:layout_width="wrap_content"
@@ -197,7 +213,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp">
@@ -235,6 +250,49 @@
                     android:textColor="@color/text_dark" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <!-- Historique des anciennes échéances -->
+        <LinearLayout
+            android:id="@+id/layoutHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="Historique"
+                android:textColor="@color/text_dark"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <TextView
+                    android:id="@+id/tvHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="6dp"
+                    android:padding="16dp"
+                    android:textColor="@color/text_muted"
+                    android:textSize="14sp" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
 
     </LinearLayout>
 </ScrollView>
