@@ -1,16 +1,12 @@
 package com.tonapp
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.tonapp.data.AppDatabase
@@ -26,55 +22,75 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class VehicleAdapter(private var fullList: List<VehicleEntity>) :
-    RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
+// sortByPlate = false : tri chronologique par échéance (accueil)
+// sortByPlate = true  : tri alphabétique par immatriculation (liste complète)
+class VehicleAdapter(
+    private var fullList: List<VehicleEntity>,
+    private val sortByPlate: Boolean = false
+) : RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
 
     private var displayedList: List<VehicleEntity> = emptyList()
     private var query: String = ""
     private var statusFilter: StatusFilter = StatusFilter.ALL
+    private var limit: Int? = null
 
-    private class StatusStyle(val label: String, val textRes: Int, val bgRes: Int, val barRes: Int)
+    // Nombre de véhicules correspondant aux filtres, avant application de la limite
+    var matchCount: Int = 0
+        private set
+
+    private class StatusStyle(val textRes: Int, val bgRes: Int, val stripRes: Int)
 
     init {
         updateData(fullList)
     }
 
     fun updateData(newList: List<VehicleEntity>) {
-        fullList = newList.sortedBy { it.technicalControlExpiry }
+        fullList = if (sortByPlate) {
+            newList.sortedBy { it.licensePlate.lowercase(Locale.getDefault()) }
+        } else {
+            newList.sortedBy { it.technicalControlExpiry }
+        }
         applyFilters()
     }
 
-    fun filter(newQuery: String) {
-        query = newQuery
+    fun setFilters(status: StatusFilter, newQuery: String, newLimit: Int? = null) {
+        statusFilter = status
+        query = newQuery.trim()
+        limit = newLimit
         applyFilters()
     }
 
-    fun setStatusFilter(filter: StatusFilter) {
-        statusFilter = filter
-        applyFilters()
+    // Réévalue les statuts (ex. au retour dans l'appli, le lendemain)
+    fun refresh() = applyFilters()
+
+    private fun matchesStatus(expiry: Long): Boolean {
+        val status = VehicleStatus.of(expiry)
+        return when (statusFilter) {
+            StatusFilter.ALL -> true
+            StatusFilter.UPCOMING -> status != StatusFilter.EXPIRED
+            else -> status == statusFilter
+        }
     }
 
     private fun applyFilters() {
-        displayedList = fullList.filter { v ->
-            val matchesStatus = statusFilter == StatusFilter.ALL ||
-                VehicleStatus.of(v.technicalControlExpiry) == statusFilter
+        val matches = fullList.filter { v ->
             val matchesQuery = query.isEmpty() ||
                 v.name.contains(query, ignoreCase = true) ||
                 v.licensePlate.contains(query, ignoreCase = true) ||
                 v.ownerFullName.contains(query, ignoreCase = true)
-            matchesStatus && matchesQuery
+            matchesStatus(v.technicalControlExpiry) && matchesQuery
         }
+        matchCount = matches.size
+        displayedList = limit?.let { matches.take(it) } ?: matches
         notifyDataSetChanged()
     }
 
     class VehicleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvName: TextView = view.findViewById(R.id.tvVehicleName)
         val tvPlate: TextView = view.findViewById(R.id.tvLicensePlate)
         val tvOwner: TextView = view.findViewById(R.id.tvOwnerInfo)
         val tvStatus: TextView = view.findViewById(R.id.tvTechnicalControlStatus)
         val tvExpiryDate: TextView = view.findViewById(R.id.tvExpiryDate)
-        val progressExpiry: ProgressBar = view.findViewById(R.id.progressExpiry)
-        val tvPdfAction: TextView = view.findViewById(R.id.tvPdfAction)
+        val viewStrip: View = view.findViewById(R.id.viewStatusStrip)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VehicleViewHolder {
@@ -83,80 +99,36 @@ class VehicleAdapter(private var fullList: List<VehicleEntity>) :
         return VehicleViewHolder(view)
     }
 
-    private fun getMimeType(context: Context, uri: Uri): String {
-        val typeFromResolver = try {
-            context.contentResolver.getType(uri)
-        } catch (e: Exception) {
-            null
-        }
-        return typeFromResolver ?: if (uri.toString().contains(".pdf", ignoreCase = true)) "application/pdf" else "image/*"
-    }
-
     override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
         val vehicle = displayedList[position]
         val ctx = holder.itemView.context
+        val expiry = vehicle.technicalControlExpiry
 
-        holder.tvName.text = vehicle.name
         holder.tvPlate.text = vehicle.licensePlate
 
-        val ownerParts = listOf(vehicle.ownerFullName, vehicle.ownerPhoneNumber).filter { it.isNotBlank() }
-        holder.tvOwner.text = if (ownerParts.isEmpty()) {
-            "Propriétaire non renseigné"
+        if (vehicle.ownerFullName.isBlank()) {
+            holder.tvOwner.visibility = View.GONE
         } else {
-            "Propriétaire : " + ownerParts.joinToString(" · ")
+            holder.tvOwner.visibility = View.VISIBLE
+            holder.tvOwner.text = vehicle.ownerFullName
         }
 
-        val expiry = vehicle.technicalControlExpiry
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.tvExpiryDate.text = "Échéance : ${dateFormat.format(Date(expiry))}"
 
-        val daysRemaining = ((expiry - System.currentTimeMillis()) / (1000 * 60 * 60 * 24)).toInt()
-
-        val progress = when {
-            daysRemaining <= 0 -> 100
-            daysRemaining >= 365 -> 100
-            else -> ((daysRemaining.toFloat() / 365f) * 100).toInt()
+        // Vert : éloignée | Orange : proche ou aujourd'hui | Rouge : dépassée
+        val style = when (VehicleStatus.of(expiry)) {
+            StatusFilter.EXPIRED ->
+                StatusStyle(R.color.status_red, R.color.status_red_bg, R.color.status_red)
+            StatusFilter.TODAY, StatusFilter.SOON ->
+                StatusStyle(R.color.status_orange, R.color.status_orange_bg, R.color.status_orange_bar)
+            else ->
+                StatusStyle(R.color.status_green, R.color.status_green_bg, R.color.status_green)
         }
-        holder.progressExpiry.progress = progress
-
-        val style = when {
-            daysRemaining <= 0 -> StatusStyle(
-                VehicleStatus.expiredLabel(expiry), R.color.status_red, R.color.status_red_bg, R.color.status_red
-            )
-            daysRemaining <= 30 -> StatusStyle(
-                "Expire dans $daysRemaining jour(s)", R.color.status_orange, R.color.status_orange_bg, R.color.status_orange_bar
-            )
-            else -> StatusStyle(
-                "Valide ($daysRemaining j)", R.color.status_green, R.color.status_green_bg, R.color.status_green
-            )
-        }
-        holder.tvStatus.text = style.label
+        holder.tvStatus.text = VehicleStatus.remainingLabel(expiry)
         holder.tvStatus.setTextColor(ContextCompat.getColor(ctx, style.textRes))
         holder.tvStatus.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(ctx, style.bgRes))
-        holder.progressExpiry.progressTintList = ColorStateList.valueOf(ContextCompat.getColor(ctx, style.barRes))
-
-        if (!vehicle.technicalControlPdfPath.isNullOrEmpty()) {
-            holder.tvPdfAction.visibility = View.VISIBLE
-            val uri = Uri.parse(vehicle.technicalControlPdfPath)
-            val mimeType = getMimeType(ctx, uri)
-            val isPdf = mimeType.contains("pdf", ignoreCase = true)
-
-            holder.tvPdfAction.text = if (isPdf) "📄 Voir le PDF" else "🖼️ Voir la photo"
-
-            holder.tvPdfAction.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(uri, mimeType)
-                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                }
-                try {
-                    ctx.startActivity(intent)
-                } catch (e: Exception) {
-                    Toast.makeText(ctx, "Aucune application disponible pour ouvrir ce fichier", Toast.LENGTH_SHORT).show()
-                }
-            }
-        } else {
-            holder.tvPdfAction.visibility = View.GONE
-        }
+        holder.viewStrip.setBackgroundColor(ContextCompat.getColor(ctx, style.stripRes))
 
         holder.itemView.setOnClickListener {
             val intent = Intent(ctx, VehicleDetailActivity::class.java).apply {

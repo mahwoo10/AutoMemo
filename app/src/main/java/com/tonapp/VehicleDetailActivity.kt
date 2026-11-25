@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.cardview.widget.CardView
 import com.tonapp.utils.NotificationScheduler
 import com.tonapp.utils.ReminderPrefs
+import com.tonapp.utils.StatusFilter
 import com.tonapp.utils.VehicleStatus
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -41,13 +42,18 @@ class VehicleDetailActivity : AppCompatActivity() {
 
         val cardGlobalStatus = findViewById<CardView>(R.id.cardGlobalStatus)
         val tvGlobalStatus = findViewById<TextView>(R.id.tvGlobalStatus)
-        val daysRemaining = ((expiry - System.currentTimeMillis()) / (1000 * 60 * 60 * 24)).toInt()
+        val status = VehicleStatus.of(expiry)
+        val daysRemaining = VehicleStatus.calendarDaysUntil(expiry)
 
-        if (daysRemaining <= 0) {
-            tvGlobalStatus.text = "Statut Global : ${VehicleStatus.expiredLabel(expiry)}"
+        if (status == StatusFilter.EXPIRED) {
+            tvGlobalStatus.text = "Statut Global : ${VehicleStatus.remainingLabel(expiry)}"
             tvGlobalStatus.setTextColor(Color.parseColor("#D32F2F"))
             cardGlobalStatus.setCardBackgroundColor(Color.parseColor("#FFEBEE"))
-        } else if (daysRemaining <= 30) {
+        } else if (status == StatusFilter.TODAY) {
+            tvGlobalStatus.text = "Statut Global : Échéance aujourd'hui"
+            tvGlobalStatus.setTextColor(Color.parseColor("#B45309"))
+            cardGlobalStatus.setCardBackgroundColor(Color.parseColor("#FEF3C7"))
+        } else if (status == StatusFilter.SOON) {
             tvGlobalStatus.text = "Statut Global : Expire bientôt ($daysRemaining j)"
             tvGlobalStatus.setTextColor(Color.parseColor("#B45309"))
             cardGlobalStatus.setCardBackgroundColor(Color.parseColor("#FEF3C7"))
