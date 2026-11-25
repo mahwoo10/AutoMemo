@@ -2,11 +2,11 @@ package com.tonapp.utils
 
 import android.content.Context
 
-// Mémorise, pour chaque véhicule, quels rappels (30, 15, 7 jours) sont activés.
+// Mémorise, pour chaque véhicule, quels rappels (30, 15, 7, 3 jours et jour J) sont activés.
 // Par défaut, tous les rappels sont activés.
 object ReminderPrefs {
     private const val FILE = "automemo_reminders"
-    private val allDays = listOf(30, 15, 7)
+    private val allDays = SettingsPrefs.ALL_DAYS
 
     private fun key(vehicleId: String, days: Int) = "$vehicleId:$days"
 
