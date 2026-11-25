@@ -19,4 +19,7 @@
     <color name="stat_red">#FF8A80</color>
     <color name="stat_orange">#FFD180</color>
     <color name="stat_green">#A5D6A7</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="icon_tint">#0F2537</color>
+    <color name="btn_navy">#0F2537</color>
 </resources>
