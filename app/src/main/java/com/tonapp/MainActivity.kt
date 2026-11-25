@@ -22,6 +22,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
@@ -33,6 +34,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.chip.ChipGroup
 import com.tonapp.data.AppDatabase
 import com.tonapp.data.VehicleEntity
+import com.tonapp.utils.BackupManager
 import com.tonapp.utils.NotificationScheduler
 import com.tonapp.utils.SettingsPrefs
 import com.tonapp.utils.StatusFilter
@@ -54,13 +56,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var pageHome: View
     private lateinit var pageVehicles: View
-    private lateinit var pageCalendar: View
     private lateinit var pageSettings: View
-    private lateinit var calAdapter: VehicleAdapter
-    private val calMonth: Calendar = Calendar.getInstance().apply {
-        set(Calendar.DAY_OF_MONTH, 1)
+
+    // Sauvegarde : choix du fichier à écrire / à lire
+    private val exportLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+        if (uri != null) runBackup { BackupManager.export(this, uri) to "véhicule(s) exporté(s)" }
     }
-    private var selectedDay: Int? = null
+    private val importLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) confirmImport(uri)
+    }
     private lateinit var btnAdd: View
     private lateinit var bottomNav: BottomNavigationView
 
@@ -79,7 +83,6 @@ class MainActivity : AppCompatActivity() {
 
         pageHome = findViewById(R.id.pageHome)
         pageVehicles = findViewById(R.id.pageVehicles)
-        pageCalendar = findViewById(R.id.pageCalendar)
         pageSettings = findViewById(R.id.pageSettings)
         btnAdd = findViewById(R.id.btnAddVehicle)
         bottomNav = findViewById(R.id.bottomNav)
@@ -128,13 +131,6 @@ class MainActivity : AppCompatActivity() {
         etSearch.addTextChangedListener(onTextChanged { applyHome() })
         etSearchVehicles.addTextChangedListener(onTextChanged { applyVehicles() })
 
-        calAdapter = VehicleAdapter(emptyList())
-        findViewById<RecyclerView>(R.id.recyclerViewCalendar).apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = calAdapter
-        }
-        findViewById<View>(R.id.ivCalPrev).setOnClickListener { changeMonth(-1) }
-        findViewById<View>(R.id.ivCalNext).setOnClickListener { changeMonth(1) }
         setupSettings()
 
         // Barre de navigation inférieure
@@ -142,7 +138,9 @@ class MainActivity : AppCompatActivity() {
             showPage(item.itemId)
             true
         }
-        bottomNav.selectedItemId = savedInstanceState?.getInt(STATE_PAGE, R.id.nav_home) ?: R.id.nav_home
+        val savedPage = savedInstanceState?.getInt(STATE_PAGE, R.id.nav_home) ?: R.id.nav_home
+        bottomNav.selectedItemId =
+            if (savedPage == R.id.nav_vehicles || savedPage == R.id.nav_settings) savedPage else R.id.nav_home
 
         // Retour : depuis une autre rubrique on revient d'abord à l'accueil
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -186,11 +184,10 @@ class MainActivity : AppCompatActivity() {
     private fun showPage(itemId: Int) {
         val target: View = when (itemId) {
             R.id.nav_vehicles -> pageVehicles
-            R.id.nav_calendar -> pageCalendar
             R.id.nav_settings -> pageSettings
             else -> pageHome
         }
-        listOf(pageHome, pageVehicles, pageCalendar, pageSettings).forEach {
+        listOf(pageHome, pageVehicles, pageSettings).forEach {
             it.visibility = if (it === target) View.VISIBLE else View.GONE
         }
 
@@ -208,7 +205,6 @@ class MainActivity : AppCompatActivity() {
         updateStats()
         applyHome()
         applyVehicles()
-        renderCalendar()
     }
 
     private fun applyHome() {
@@ -284,115 +280,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // ---------- Calendrier ----------
-
-    private fun changeMonth(delta: Int) {
-        calMonth.add(Calendar.MONTH, delta)
-        selectedDay = null
-        renderCalendar()
-    }
-
-    private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
-
-    private fun renderCalendar() {
-        val locale = Locale.getDefault()
-        val monthTitle = SimpleDateFormat("LLLL yyyy", locale).format(calMonth.time)
-            .replaceFirstChar { it.uppercase() }
-        findViewById<TextView>(R.id.tvCalMonth).text = monthTitle
-
-        val year = calMonth.get(Calendar.YEAR)
-        val month = calMonth.get(Calendar.MONTH)
-
-        // Échéances du mois, regroupées par jour
-        val byDay = HashMap<Int, MutableList<VehicleEntity>>()
-        val cal = Calendar.getInstance()
-        for (v in vehicles) {
-            cal.timeInMillis = v.technicalControlExpiry
-            if (cal.get(Calendar.YEAR) == year && cal.get(Calendar.MONTH) == month) {
-                byDay.getOrPut(cal.get(Calendar.DAY_OF_MONTH)) { mutableListOf() }.add(v)
-            }
-        }
-
-        val today = Calendar.getInstance()
-        val isThisMonth = today.get(Calendar.YEAR) == year && today.get(Calendar.MONTH) == month
-        val daysInMonth = calMonth.getActualMaximum(Calendar.DAY_OF_MONTH)
-        // Semaine commençant le lundi
-        val offset = (calMonth.get(Calendar.DAY_OF_WEEK) + 5) % 7
-        val rows = (offset + daysInMonth + 6) / 7
-
-        val grid = findViewById<LinearLayout>(R.id.calendarGrid)
-        grid.removeAllViews()
-        val dot = dp(36)
-
-        for (r in 0 until rows) {
-            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-            for (c in 0 until 7) {
-                val day = r * 7 + c - offset + 1
-                val cell = FrameLayout(this).apply {
-                    layoutParams = LinearLayout.LayoutParams(0, dp(44), 1f)
-                }
-                if (day in 1..daysInMonth) {
-                    val tv = TextView(this).apply {
-                        layoutParams = FrameLayout.LayoutParams(dot, dot, Gravity.CENTER)
-                        gravity = Gravity.CENTER
-                        textSize = 14f
-                        text = day.toString()
-                        setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text_dark))
-                    }
-                    val dayVehicles = byDay[day]
-                    if (dayVehicles != null) {
-                        // Couleur du jour : la plus urgente parmi ses échéances
-                        val colorRes = when {
-                            dayVehicles.any { VehicleStatus.of(it.technicalControlExpiry) == StatusFilter.EXPIRED } ->
-                                R.color.status_red
-                            dayVehicles.any { VehicleStatus.of(it.technicalControlExpiry) != StatusFilter.VALID } ->
-                                R.color.status_orange_bar
-                            else -> R.color.status_green
-                        }
-                        tv.setBackgroundResource(R.drawable.bg_cal_solid)
-                        tv.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, colorRes))
-                        tv.setTextColor(ContextCompat.getColor(this, android.R.color.white))
-                        tv.setTypeface(tv.typeface, android.graphics.Typeface.BOLD)
-                    } else if (isThisMonth && day == today.get(Calendar.DAY_OF_MONTH)) {
-                        tv.setTextColor(ContextCompat.getColor(this, R.color.accent_blue))
-                        tv.setTypeface(tv.typeface, android.graphics.Typeface.BOLD)
-                    }
-                    if (selectedDay == day) {
-                        tv.foreground = ContextCompat.getDrawable(this, R.drawable.bg_cal_ring)
-                    }
-                    cell.setOnClickListener {
-                        selectedDay = if (selectedDay == day) null else day
-                        renderCalendar()
-                    }
-                    cell.addView(tv)
-                }
-                row.addView(cell)
-            }
-            grid.addView(row)
-        }
-
-        // Liste : le jour choisi, sinon tout le mois
-        val from = Calendar.getInstance().apply {
-            clear()
-            set(year, month, selectedDay ?: 1, 0, 0, 0)
-        }
-        val to = Calendar.getInstance().apply {
-            clear()
-            set(year, month, selectedDay ?: daysInMonth, 23, 59, 59)
-        }
-        calAdapter.updateData(vehicles)
-        calAdapter.setDateRange(from.timeInMillis, to.timeInMillis)
-
-        val day = selectedDay
-        findViewById<TextView>(R.id.tvCalListTitle).text = if (day != null) {
-            "Échéances du " + SimpleDateFormat("d MMMM", locale).format(from.time)
-        } else {
-            "Échéances du mois (${calAdapter.itemCount})"
-        }
-        findViewById<View>(R.id.tvCalEmpty).visibility =
-            if (calAdapter.itemCount == 0) View.VISIBLE else View.GONE
-    }
-
     // ---------- Paramètres ----------
 
     private fun setupSettings() {
@@ -433,6 +320,13 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
 
+        findViewById<View>(R.id.rowExport).setOnClickListener {
+            exportLauncher.launch("automemo-sauvegarde.json")
+        }
+        findViewById<View>(R.id.rowImport).setOnClickListener {
+            importLauncher.launch(arrayOf("*/*"))
+        }
+
         val labels = arrayOf("Système", "Clair", "Sombre")
         val modes = intArrayOf(
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
@@ -453,6 +347,32 @@ class MainActivity : AppCompatActivity() {
                 }
                 .setNegativeButton("Annuler", null)
                 .show()
+        }
+    }
+
+    private fun confirmImport(uri: Uri) {
+        AlertDialog.Builder(this)
+            .setTitle("Importer une sauvegarde")
+            .setMessage("Les véhicules du fichier seront ajoutés, ou mis à jour s'ils existent déjà.")
+            .setPositiveButton("Importer") { _, _ ->
+                runBackup { BackupManager.import(this, uri) to "véhicule(s) importé(s)" }
+            }
+            .setNegativeButton("Annuler", null)
+            .show()
+    }
+
+    private fun runBackup(action: suspend () -> Pair<Int, String>) {
+        lifecycleScope.launch {
+            try {
+                val (count, label) = action()
+                Toast.makeText(this@MainActivity, "$count $label", Toast.LENGTH_LONG).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Échec : ${e.message ?: "fichier invalide"}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

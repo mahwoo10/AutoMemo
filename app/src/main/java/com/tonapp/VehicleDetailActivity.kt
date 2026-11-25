@@ -76,6 +76,8 @@ class VehicleDetailActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.btnEditVehicle).setOnClickListener { showEditDialog() }
         findViewById<View>(R.id.btnChangeDoc).setOnClickListener { pickDocument() }
+        findViewById<View>(R.id.btnCallOwner).setOnClickListener { callOwner() }
+        findViewById<View>(R.id.btnShareOwner).setOnClickListener { notifyOwner() }
 
         // Puis chargement des données complètes (propriétaire, téléphone…)
         if (vehicleId.isNotEmpty()) {
@@ -104,9 +106,40 @@ class VehicleDetailActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvDetailOwner).text =
             if (lines.isEmpty()) "Aucune information renseignée" else lines.joinToString("\n")
 
+        findViewById<View>(R.id.btnCallOwner).visibility =
+            if (v.ownerPhoneNumber.isBlank()) View.GONE else View.VISIBLE
+
         showExpiryAndStatus()
         bindDocument(v.technicalControlPdfPath)
         showHistory()
+    }
+
+    // Ouvre le numéro dans le composeur (l'appel reste à lancer par l'utilisateur)
+    private fun callOwner() {
+        val phone = vehicle?.ownerPhoneNumber?.trim().orEmpty()
+        if (phone.isEmpty()) return
+        try {
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone")))
+        } catch (e: Exception) {
+            Toast.makeText(this, "Impossible d'ouvrir le composeur", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Prépare un message prêt à envoyer (WhatsApp, SMS…) au choix de l'utilisateur
+    private fun notifyOwner() {
+        val v = vehicle ?: return
+        val date = dateFormat.format(Date(v.technicalControlExpiry))
+        val greeting = if (v.ownerFullName.isBlank()) "Bonjour," else "Bonjour ${v.ownerFullName},"
+        val body = if (VehicleStatus.of(v.technicalControlExpiry) == StatusFilter.EXPIRED) {
+            "la visite technique du véhicule ${v.licensePlate} a expiré le $date. Merci de la renouveler dès que possible."
+        } else {
+            "la visite technique du véhicule ${v.licensePlate} expire le $date. Pensez à la renouveler à temps."
+        }
+        val send = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, "$greeting $body")
+        }
+        startActivity(Intent.createChooser(send, "Prévenir le propriétaire"))
     }
 
     // Date d'échéance + bandeau de statut, à partir de currentExpiry
