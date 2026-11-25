@@ -23,6 +23,14 @@ object HistoryPrefs {
             .apply()
     }
 
+    // Remplace tout l'historique d'un véhicule (restauration d'une sauvegarde)
+    fun setAll(context: Context, vehicleId: String, dates: List<Long>) {
+        context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
+            .edit()
+            .putString(vehicleId, dates.distinct().take(MAX).joinToString(","))
+            .apply()
+    }
+
     fun clear(context: Context, vehicleId: String) {
         context.getSharedPreferences(FILE, Context.MODE_PRIVATE)
             .edit()
