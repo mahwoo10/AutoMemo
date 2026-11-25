@@ -167,6 +167,42 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Contacter le propriétaire -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCallOwner"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:text="Appeler"
+                android:textAllCaps="false"
+                android:textColor="@color/accent_blue"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/accent_blue" />
+
+            <Button
+                android:id="@+id/btnShareOwner"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:text="Prévenir"
+                android:textAllCaps="false"
+                android:textColor="@color/accent_blue"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/accent_blue" />
+        </LinearLayout>
+
         <!-- Documents -->
         <TextView
             android:layout_width="wrap_content"

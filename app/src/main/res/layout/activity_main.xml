@@ -485,220 +485,6 @@
             </FrameLayout>
         </LinearLayout>
 
-        <!-- ================= CALENDRIER ================= -->
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/pageCalendar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            android:overScrollMode="never"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_header"
-                    android:orientation="vertical"
-                    android:paddingStart="20dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="20dp"
-                    android:paddingBottom="22dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Calendrier"
-                        android:textColor="@android:color/white"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/ivCalPrev"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:clickable="true"
-                            android:contentDescription="Mois précédent"
-                            android:focusable="true"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_chevron_left"
-                            android:tint="@android:color/white" />
-
-                        <TextView
-                            android:id="@+id/tvCalMonth"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Novembre 2026"
-                            android:textColor="@android:color/white"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/ivCalNext"
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:clickable="true"
-                            android:contentDescription="Mois suivant"
-                            android:focusable="true"
-                            android:padding="10dp"
-                            android:src="@drawable/ic_chevron_right"
-                            android:tint="@android:color/white" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:cardBackgroundColor="@color/surface"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="1dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingBottom="4dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="L"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="M"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="M"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="J"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="V"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="S"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="D"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/calendarGrid"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/tvCalListTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingTop="20dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="Échéances du mois"
-                    android:textColor="@color/text_dark"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewCalendar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="24dp" />
-
-                <TextView
-                    android:id="@+id/tvCalEmpty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="24dp"
-                    android:text="Aucune échéance"
-                    android:textColor="@color/text_muted"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
         <!-- ================= PARAMÈTRES ================= -->
         <ScrollView
             android:id="@+id/pageSettings"
@@ -719,9 +505,9 @@
                     android:background="@drawable/bg_header"
                     android:orientation="vertical"
                     android:paddingStart="20dp"
-                    android:paddingTop="16dp"
+                    android:paddingTop="12dp"
                     android:paddingEnd="20dp"
-                    android:paddingBottom="22dp">
+                    android:paddingBottom="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -744,10 +530,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:text="Rappels"
                     android:textColor="@color/text_dark"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <androidx.cardview.widget.CardView
@@ -764,13 +550,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchDay30"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="0dp"
+                        android:minHeight="40dp"
                         android:checked="true"
                         android:text="30 jours avant"
                         android:textColor="@color/text_dark" />
@@ -779,7 +566,8 @@
                         android:id="@+id/switchDay15"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="2dp"
+                        android:minHeight="40dp"
                         android:checked="true"
                         android:text="15 jours avant"
                         android:textColor="@color/text_dark" />
@@ -788,7 +576,8 @@
                         android:id="@+id/switchDay7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="2dp"
+                        android:minHeight="40dp"
                         android:checked="true"
                         android:text="7 jours avant"
                         android:textColor="@color/text_dark" />
@@ -797,7 +586,8 @@
                         android:id="@+id/switchDay3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="2dp"
+                        android:minHeight="40dp"
                         android:checked="true"
                         android:text="3 jours avant"
                         android:textColor="@color/text_dark" />
@@ -806,7 +596,8 @@
                         android:id="@+id/switchDay0"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="2dp"
+                        android:minHeight="40dp"
                         android:checked="true"
                         android:text="Le jour de l'échéance"
                         android:textColor="@color/text_dark" />
@@ -814,7 +605,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="8dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
@@ -824,13 +615,13 @@
                                 android:layout_weight="1"
                                 android:text="Heure des notifications"
                                 android:textColor="@color/text_dark"
-                                android:textSize="15sp" />
+                                android:textSize="14sp" />
 
                             <Button
                                 android:id="@+id/btnReminderTime"
                                 android:layout_width="wrap_content"
-                                android:layout_height="44dp"
-                                android:minWidth="88dp"
+                                android:layout_height="40dp"
+                                android:minWidth="80dp"
                                 android:text="09:00"
                                 android:textAllCaps="false"
                                 android:textColor="@android:color/white"
@@ -845,10 +636,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:text="Apparence"
                     android:textColor="@color/text_dark"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <androidx.cardview.widget.CardView
@@ -870,7 +661,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="16dp">
+                        android:padding="12dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -878,7 +669,7 @@
                             android:layout_weight="1"
                             android:text="Thème"
                             android:textColor="@color/text_dark"
-                            android:textSize="15sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tvThemeValue"
@@ -886,15 +677,98 @@
                             android:layout_height="wrap_content"
                             android:text="Système"
                             android:textColor="@color/accent_blue"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Données"
+                    android:textColor="@color/text_dark"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardBackgroundColor="@color/surface"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/rowExport"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Exporter une sauvegarde"
+                                android:textColor="@color/text_dark"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enregistre vos véhicules dans un fichier"
+                                android:textColor="@color/text_muted"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/stroke_light" />
+
+                        <LinearLayout
+                            android:id="@+id/rowImport"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Importer une sauvegarde"
+                                android:textColor="@color/text_dark"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Restaure vos véhicules depuis un fichier"
+                                android:textColor="@color/text_muted"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:text="Ces réglages s'appliquent à tous les véhicules. Chaque fiche permet de désactiver un rappel pour ce véhicule seulement."
                     android:textColor="@color/text_muted"
                     android:textSize="13sp" />
