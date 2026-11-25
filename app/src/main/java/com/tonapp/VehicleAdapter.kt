@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.tonapp.data.AppDatabase
 import com.tonapp.data.VehicleEntity
+import com.tonapp.utils.HistoryPrefs
 import com.tonapp.utils.NotificationScheduler
 import com.tonapp.utils.ReminderPrefs
 import com.tonapp.utils.StatusFilter
@@ -150,6 +151,7 @@ class VehicleAdapter(
                         AppDatabase.getDatabase(ctx).vehicleDao().deleteVehicle(vehicle)
                         NotificationScheduler.cancelReminders(ctx, vehicle.id)
                         ReminderPrefs.clear(ctx, vehicle.id)
+                        HistoryPrefs.clear(ctx, vehicle.id)
                     }
                 }
                 .setNegativeButton("Annuler", null)
