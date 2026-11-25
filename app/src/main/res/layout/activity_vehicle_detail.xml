@@ -47,7 +47,7 @@
                     android:layout_gravity="center"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_car"
-                    android:tint="@color/navy_header" />
+                    android:tint="@color/icon_tint" />
             </FrameLayout>
 
             <TextView
@@ -110,6 +110,63 @@
             app:backgroundTint="@color/accent_blue"
             app:cornerRadius="12dp" />
 
+        <!-- Informations -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardBackgroundColor="@color/surface"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Informations"
+                        android:textColor="@color/text_dark"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvDetailOwner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:lineSpacingExtra="3dp"
+                        android:text="Aucune information renseignée"
+                        android:textColor="@color/text_muted"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnEditVehicle"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="12dp"
+                    android:text="Modifier"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent_blue"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/accent_blue" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- Documents -->
         <TextView
             android:layout_width="wrap_content"
@@ -127,7 +184,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp">
 
@@ -154,7 +211,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_calendar"
-                            android:tint="@color/navy_header" />
+                            android:tint="@color/icon_tint" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -191,8 +248,19 @@
                     android:layout_marginTop="14dp"
                     android:text="Afficher le justificatif"
                     android:textColor="@android:color/white"
-                    app:backgroundTint="@color/navy_header"
+                    app:backgroundTint="@color/btn_navy"
                     app:cornerRadius="12dp" />
+                <Button
+                    android:id="@+id/btnChangeDoc"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Joindre un justificatif"
+                    android:textAllCaps="false"
+                    android:textColor="@color/accent_blue"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/accent_blue" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -213,7 +281,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp">
 
@@ -248,6 +316,32 @@
                     android:checked="true"
                     android:text="7 jours avant"
                     android:textColor="@color/text_dark" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch3Days"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:checked="true"
+                    android:text="3 jours avant"
+                    android:textColor="@color/text_dark" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchDay0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:checked="true"
+                    android:text="Le jour de l'échéance"
+                    android:textColor="@color/text_dark" />
+
+                <TextView
+                    android:id="@+id/tvRemindersEmpty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aucun rappel activé dans les Paramètres"
+                    android:textColor="@color/text_muted"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -275,7 +369,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                app:cardBackgroundColor="@android:color/white"
+                app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
 
